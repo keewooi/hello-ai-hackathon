@@ -9,8 +9,8 @@ dotenv.load_dotenv()
 
 @app.route('/')
 def index():
-    my_variable = "SohAI"
-    # response = gemini.generate_response("What is the meaning of life?")
+    my_variable = "SohAIs"
+    # response = gemini.generate_response("What is the meaning of life?", thinking_budget=1000)
     return render_template('index.html', my_variable=my_variable)
 
 if __name__ == '__main__':
