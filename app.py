@@ -148,6 +148,9 @@ def virtual_try_on_route():
         
         blob.upload_from_string(img_byte_arr, content_type='image/png')
 
+        session['vto_image_url'] = blob.public_url
+        session['vto_person_image'] = person_image_path
+        session['vto_clothing_images'] = clothing_image_paths
         return jsonify({'image_url': blob.public_url})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
@@ -177,7 +180,27 @@ def add_to_virtual_try_on():
 @app.route('/virtual')
 def virtual():
     images = session.get('product_images', [])
-    return render_template('virtual.html', images=images)
+    vto_image_url = session.get('vto_image_url')
+    vto_person_image = session.get('vto_person_image')
+    vto_clothing_images = session.get('vto_clothing_images')
+
+    # Check if the selected images have changed
+    current_clothing_images = []
+    for item in images:
+        if isinstance(item, dict):
+            current_clothing_images.append(item['image_url'])
+        else:
+            current_clothing_images.append(item)
+
+    current_clothing_gs_uris = [convert_to_gs_uri(uri) for uri in current_clothing_images]
+    if vto_image_url and vto_clothing_images and set(vto_clothing_images) == set(current_clothing_gs_uris):
+        return render_template('virtual.html', images=images, vto_image_url=vto_image_url)
+    else:
+        # Clear the old VTO image if the items have changed
+        session.pop('vto_image_url', None)
+        session.pop('vto_person_image', None)
+        session.pop('vto_clothing_images', None)
+        return render_template('virtual.html', images=images)
 
 @app.route('/remove_from_virtual_try_on')
 def remove_from_virtual_try_on():
@@ -203,6 +226,54 @@ def generated_product():
         'reviews': []
     }
     return render_template('generated_product.html', product=product, title=title)
+
+@app.route('/cart')
+def cart():
+    cart_items = session.get('cart', [])
+    total_price = sum(item.get('price', 0) for item in cart_items)
+    return render_template('cart.html', cart=cart_items, total_price=total_price)
+
+@app.route('/add_to_cart')
+def add_to_cart():
+    product_images = session.get('product_images', [])
+    cart = session.get('cart', [])
+    
+    with open('products.json') as f:
+        all_products = json.load(f)
+
+    for item in product_images:
+        # Avoid adding duplicates
+        if any(cart_item.get('image_url') == (item.get('image_url') if isinstance(item, dict) else item) for cart_item in cart):
+            continue
+
+        if isinstance(item, dict):
+            # For generated items, add with a default price
+            cart.append({
+                'image_url': item.get('image_url'),
+                'title': item.get('title', 'Generated Product'),
+                'price': item.get('price', 49.99)  # Default price for generated items
+            })
+        else:
+            # For existing products, find details from products.json
+            product = next((p for p in all_products if p['image_urls']['large'] == item), None)
+            if product:
+                cart.append({
+                    'id': product.get('id'),
+                    'image_url': item,
+                    'title': product.get('name'),
+                    'price': product.get('price')
+                })
+
+    session['cart'] = cart
+    return redirect(url_for('cart'))
+
+@app.route('/remove_from_cart')
+def remove_from_cart():
+    image_url = request.args.get('image_url')
+    cart = session.get('cart', [])
+    cart = [item for item in cart if item.get('image_url') != image_url]
+    session['cart'] = cart
+    return redirect(url_for('cart'))
 
 
 @app.route('/api/upload', methods=['POST'])

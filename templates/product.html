@@ -82,7 +82,7 @@
     {% endif %}
     <div class="flex px-4 py-3 justify-start">
       {% if product.image_urls.large %}
-      <a href="{{ url_for('add_to_virtual_try_on', image_url=product.image_urls.large) }}"
+      <a href="{{ url_for('add_to_virtual_try_on', image_url=product.image_urls.large, title=product.name) }}"
         class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#141414] text-neutral-50 text-sm font-bold leading-normal tracking-[0.015em]"
       >
         <span class="truncate">Virtual Try-On</span>

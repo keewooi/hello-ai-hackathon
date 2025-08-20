@@ -44,21 +44,21 @@
   },
   {
     "id": 2,
-    "category": "Accessories",
+    "category": "Pants",
     "image_urls": {
-      "small": "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/15452.jpg",
-      "medium": "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/15452.jpg",
-      "large": "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/15452.jpg",
+      "small": "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/22493.jpg",
+      "medium": "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/22493.jpg",
+      "large": "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/22493.jpg",
       "small_set": [
-        "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/15452.jpg",
-        "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/15452.jpg",
-        "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/15452.jpg"
+        "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/22493.jpg",
+        "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/22493.jpg",
+        "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/22493.jpg"
       ]
     },
-    "name": "Bucket Hat",
+    "name": "Edam Canvas Travel Pants",
     "description": {
-      "short": "Keep the head warm!",
-      "long": "These hat feature a lightweight yet durable frame crafted from premium straw."
+      "short": "Lightweight travel pants for days on the road!",
+      "long": "These pants feature a lightweight yet durable frame crafted from premium cotton blend."
     },
     "price": 79.99,
     "sizes": ["One Size"],
@@ -96,21 +96,21 @@
   },
   {
     "id": 4,
-    "category": "Shoes",
+    "category": "Pants",
     "image_urls": {
-      "small": "https://placehold.co/150x150?text=Comfy+Sneakers",
-      "medium": "https://placehold.co/300x300?text=Comfy+Sneakers",
-      "large": "https://placehold.co/600x600?text=Comfy+Sneakers",
+      "small": "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/6605.jpg",
+      "medium": "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/6605.jpg",
+      "large": "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/6605.jpg",
         "small_set": [
-            "https://placehold.co/150x150?text=Comfy+Sneakers",
-            "https://placehold.co/150x150?text=Comfy+Sneakers",
-            "https://placehold.co/150x150?text=Comfy+Sneakers"
+            "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/6605.jpg",
+            "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/6605.jpg",
+            "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/6605.jpg"
         ]
     },
-    "name": "Comfy Sneakers",
+    "name": "Corduroy Shorts",
     "description": {
-      "short": "A pair of comfortable sneakers for your daily walks.",
-      "long": "Engineered for comfort and performance, these sneakers are perfect for your active lifestyle. The breathable mesh upper keeps your feet cool and dry, while the cushioned insole provides excellent support and shock absorption. The durable rubber outsole offers superior traction on various surfaces. With their lightweight construction and flexible design, these sneakers will keep you comfortable all day long."
+      "short": "A pair of comfortable pants for your daily walks.",
+      "long": "Engineered for comfort and performance, these pants are perfect for your active lifestyle."
     },
     "price": 89.99,
     "sizes": ["7", "8", "9", "10", "11"],
@@ -123,21 +123,21 @@
   },
   {
     "id": 5,
-    "category": "Accessories",
+    "category": "Top",
     "image_urls": {
-      "small": "https://placehold.co/150x150?text=Leather+Backpack",
-      "medium": "https://placehold.co/300x300?text=Leather+Backpack",
-      "large": "https://placehold.co/600x600?text=Leather+Backpack",
+      "small": "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/16770.jpg",
+      "medium": "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/16770.jpg",
+      "large": "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/16770.jpg",
         "small_set": [
-            "https://placehold.co/150x150?text=Leather+Backpack",
-            "https://placehold.co/150x150?text=Leather+Backpack",
-            "https://placehold.co/150x150?text=Leather+Backpack"
+            "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/16770.jpg",
+            "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/16770.jpg",
+            "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/16770.jpg"
         ]
     },
-    "name": "Leather Backpack",
+    "name": "V-Neck Basic Tee",
     "description": {
-      "short": "A durable and stylish leather backpack for all your needs.",
-      "long": "Crafted from genuine full-grain leather, this backpack combines style and functionality. It features a spacious main compartment with a padded laptop sleeve, multiple interior pockets for organization, and a front zip pocket for easy access to your essentials. The adjustable shoulder straps and padded back panel ensure a comfortable carry, making it the perfect companion for work, travel, or everyday adventures."
+      "short": "A durable and stylish basic tee for all your needs.",
+      "long": "Crafted from cotton, this tee combines style and functionality. Makes it the perfect companion for work, travel, or everyday adventures."
     },
     "price": 129.99,
     "sizes": ["One Size"],
@@ -150,21 +150,21 @@
   },
   {
     "id": 6,
-    "category": "Accessories",
+    "category": "Top",
     "image_urls": {
-      "small": "https://placehold.co/150x150?text=Elegant+Watch",
-      "medium": "https://placehold.co/300x300?text=Elegant+Watch",
-      "large": "https://placehold.co/600x600?text=Elegant+Watch",
+      "small": "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/703.jpg",
+      "medium": "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/703.jpg",
+      "large": "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/703.jpg",
         "small_set": [
-            "https://placehold.co/150x150?text=Elegant+Watch",
-            "https://placehold.co/150x150?text=Elegant+Watch",
-            "https://placehold.co/150x150?text=Elegant+Watch"
+            "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/703.jpg",
+            "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/703.jpg",
+            "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/703.jpg"
         ]
     },
-    "name": "Elegant Watch",
+    "name": "Scoop Neck Autumn Shirt",
     "description": {
-      "short": "An elegant watch to complement your formal attire.",
-      "long": "This exquisite watch is a masterpiece of precision and style. It features a polished stainless steel case, a sapphire crystal glass for scratch resistance, and a sophisticated sunray dial with luminous hands and markers. The reliable quartz movement ensures accurate timekeeping. With its classic design and water-resistant construction, this elegant watch is the perfect accessory for any formal occasion."
+      "short": "An elegant shirt to complement your day.",
+      "long": "Elevate your everyday with this exquisite shirt, a masterpiece of subtle sophistication. Crafted from a luxurious, breathable fabric—be it a refined silk blend, a crisp Egyptian cotton, or a lightweight linen—it drapes effortlessly, offering both comfort and a polished silhouette. The meticulous tailoring is evident in every detail, from the perfectly placed darts that create a flattering shape to the finely stitched seams that speak to its quality."
     },
     "price": 249.99,
     "sizes": ["One Size"],

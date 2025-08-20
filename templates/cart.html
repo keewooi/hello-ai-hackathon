@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Shopping Cart - StyleHub{% endblock %}
+
+{% block content %}
+<div class="px-40 flex flex-1 justify-center py-5">
+  <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+    <div class="flex flex-wrap gap-2 p-4">
+      <a class="text-neutral-500 text-base font-medium leading-normal" href="{{ url_for('index') }}">Home</a>
+      <span class="text-neutral-500 text-base font-medium leading-normal">/</span>
+      <span class="text-[#141414] text-base font-medium leading-normal">Shopping Cart</span>
+    </div>
+    <h2 class="text-[#141414] tracking-light text-[28px] font-bold leading-tight px-4 text-left pb-3 pt-5">Your Cart</h2>
+    {% if cart %}
+      {% for item in cart %}
+      <div class="flex gap-4 bg-neutral-50 px-4 py-3 justify-between">
+        <div class="flex items-start gap-4">
+          <div
+            class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-[70px]"
+            style='background-image: url("{{ item.image_url }}");'
+          ></div>
+          <div class="flex flex-1 flex-col justify-center">
+            <p class="text-[#141414] text-base font-medium leading-normal">{{ item.title }}</p>
+            <p class="text-neutral-500 text-sm font-normal leading-normal">Quantity: 1</p>
+            <p class="text-neutral-500 text-sm font-normal leading-normal">Size: M, Color: Blue</p>
+            <a href="{{ url_for('remove_from_cart', image_url=item.image_url) }}" class="text-red-500 text-sm font-medium leading-normal">Remove</a>
+          </div>
+        </div>
+        <div class="shrink-0"><p class="text-[#141414] text-base font-normal leading-normal">${{ "%.2f"|format(item.get('price', 0)) }}</p></div>
+      </div>
+      {% endfor %}
+    {% else %}
+      <div class="p-4">
+        <p class="text-center">Your cart is empty. <a href="{{ url_for('products') }}" class="text-blue-500">Start shopping</a> to add items to your cart.</p>
+      </div>
+    {% endif %}
+    <h3 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Order Summary</h3>
+    <div class="p-4 grid grid-cols-[20%_1fr] gap-x-6">
+      <div class="col-span-2 grid grid-cols-subgrid border-t border-t-[#dbdbdb] py-5">
+        <p class="text-neutral-500 text-sm font-normal leading-normal">Subtotal</p>
+        <p class="text-[#141414] text-sm font-normal leading-normal">${{ "%.2f"|format(total_price) }}</p>
+      </div>
+      <div class="col-span-2 grid grid-cols-subgrid border-t border-t-[#dbdbdb] py-5">
+        <p class="text-neutral-500 text-sm font-normal leading-normal">Shipping</p>
+        <p class="text-[#141414] text-sm font-normal leading-normal">Free</p>
+      </div>
+      <div class="col-span-2 grid grid-cols-subgrid border-t border-t-[#dbdbdb] py-5">
+        <p class="text-neutral-500 text-sm font-normal leading-normal">Estimated Tax</p>
+        <p class="text-[#141414] text-sm font-normal leading-normal">$0.00</p>
+      </div>
+    </div>
+    <div class="p-4 grid grid-cols-[20%_1fr] gap-x-6">
+      <div class="col-span-2 grid grid-cols-subgrid border-t border-t-[#dbdbdb] py-5">
+        <p class="text-neutral-500 text-sm font-normal leading-normal">Total</p>
+        <p class="text-[#141414] text-sm font-normal leading-normal">${{ "%.2f"|format(total_price) }}</p>
+      </div>
+    </div>
+    <div class="flex px-4 py-3 justify-end">
+      <button
+        class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-[#141414] text-neutral-50 text-base font-bold leading-normal tracking-[0.015em]"
+      >
+        <span class="truncate">Proceed to Checkout</span>
+      </button>
+    </div>
+  </div>
+</div>
+{% endblock %}

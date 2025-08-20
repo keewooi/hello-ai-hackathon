@@ -103,11 +103,19 @@
 
     <!-- Results Container -->
     <div class="flex justify-center">
-        <div class="container mt-5" id="results-container" style="display: none;">
+        <div class="container mt-5" id="results-container" {% if not vto_image_url %}style="display: none;"{% endif %}>
             <h2 class="mb-4 text-center">Your Virtual Try-On</h2>
             <div class="row justify-content-center">
                 <div class="flex justify-center" id="results-image-container">
-                    <!-- Generated image will be appended here -->
+                    {% if vto_image_url %}
+                    <div class="flex flex-col items-center">
+                        <img src="{{ vto_image_url }}" class="img-fluid w-1/2" alt="Virtual Try-On Result">
+                        <h3 class="text-lg font-bold mt-4">Like what you see?</h3>
+                        <a href="/add_to_cart" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#141414] text-neutral-50 text-sm font-bold leading-normal tracking-[0.015em] mt-2">
+                            <span class="truncate">Add To Cart</span>
+                        </a>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

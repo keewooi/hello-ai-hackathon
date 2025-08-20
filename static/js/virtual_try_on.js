@@ -1,4 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
+    const resultsContainer = document.getElementById('results-container');
+    if (resultsContainer && resultsContainer.style.display !== 'none' && resultsContainer.querySelector('img')) {
+        return;
+    }
     const uploadTab = document.getElementById('upload-tab');
     const modelTab = document.getElementById('model-tab');
     const uploadSection = document.getElementById('upload-section');
@@ -164,7 +168,15 @@ document.addEventListener('DOMContentLoaded', function() {
             if (data.image_url) {
                 const resultsContainer = document.getElementById('results-container');
                 const resultsImageContainer = document.getElementById('results-image-container');
-                resultsImageContainer.innerHTML = `<img src="${data.image_url}" class="img-fluid" alt="Virtual Try-On Result">`;
+                resultsImageContainer.innerHTML = `
+                    <div class="flex flex-col items-center">
+                        <img src="${data.image_url}" class="img-fluid w-1/2" alt="Virtual Try-On Result">
+                        <h3 class="text-lg font-bold mt-4">Like what you see?</h3>
+                        <a href="/add_to_cart" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#141414] text-neutral-50 text-sm font-bold leading-normal tracking-[0.015em] mt-2">
+                            <span class="truncate">Add To Cart</span>
+                        </a>
+                    </div>
+                `;
                 resultsContainer.style.display = 'block';
             } else {
                 alert('Error generating image: ' + (data.error || 'Unknown error'));
