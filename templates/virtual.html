@@ -42,7 +42,7 @@
                 <h3>Selected Products</h3>
                 <div class="row">
                     {% for image in images %}
-                    <div class="col-md-4 mb-4">
+                    <div class="col-md-4 mb-4 product-image-container">
                         <div class="position-relative">
                             <img src="{{ image }}" class="img-fluid" alt="Product Image">
                             <a href="{{ url_for('remove_from_virtual_try_on', image_url=image) }}" class="btn-close position-absolute top-0 end-0" aria-label="Close"></a>
@@ -74,7 +74,34 @@
                         <img src="https://storage.googleapis.com/ksaw_thelook_ecommerce/static/model_4.jpg" class="img-fluid model-pic model-selection" data-model-id="4" alt="Model 4">
                     </div>
                 </div>
-                <button class="btn btn-primary w-100">Proceed</button>
+                <button class="btn btn-primary w-100" id="proceed-btn">Proceed</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Modal -->
+    <div class="modal fade" id="loadingModal" tabindex="-1" aria-labelledby="loadingModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loadingModalLabel">Generating Image</h5>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2">Please wait while we generate your virtual try-on image...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Container -->
+    <div class="container mt-5" id="results-container" style="display: none;">
+        <h2 class="mb-4 text-center">Your Virtual Try-On</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-8" id="results-image-container">
+                <!-- Generated image will be appended here -->
             </div>
         </div>
     </div>
@@ -89,20 +116,80 @@
             </div>
         </div>
     </footer>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
-        $(document).ready(function() {
-            $('.model-selection').on('click', function() {
-                // Remove selected class from all other models
-                $('.model-selection').not(this).removeClass('selected');
-                // Toggle selected class for the clicked model
-                $(this).toggleClass('selected');
-                // Update the hidden input
-                if ($(this).hasClass('selected')) {
-                    $('#selected-model').val($(this).data('model-id'));
-                } else {
-                    $('#selected-model').val('');
+        document.addEventListener('DOMContentLoaded', function() {
+            const modelSelections = document.querySelectorAll('.model-selection');
+            modelSelections.forEach(function(model) {
+                model.addEventListener('click', function() {
+                    modelSelections.forEach(function(m) {
+                        if (m !== model) {
+                            m.classList.remove('selected');
+                        }
+                    });
+                    model.classList.toggle('selected');
+                    const selectedModelInput = document.getElementById('selected-model');
+                    if (model.classList.contains('selected')) {
+                        selectedModelInput.value = model.dataset.modelId;
+                    } else {
+                        selectedModelInput.value = '';
+                    }
+                });
+            });
+
+            const proceedBtn = document.getElementById('proceed-btn');
+            proceedBtn.addEventListener('click', function() {
+                const selectedProducts = document.querySelectorAll('.product-image-container').length;
+                const selectedModel = document.getElementById('selected-model').value;
+
+                if (selectedProducts === 0) {
+                    alert('Please select at least one product.');
+                    return;
                 }
+
+                if (selectedModel === '') {
+                    alert('Please select a model.');
+                    return;
+                }
+
+                const selectedModelImage = document.querySelector('.model-selection.selected');
+                if (!selectedModelImage) {
+                    alert('Please select a model.');
+                    return;
+                }
+                const person_image_path = selectedModelImage.src;
+                const clothing_image_paths = Array.from(document.querySelectorAll('.product-image-container img')).map(img => img.src);
+
+                const loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+                loadingModal.show();
+
+                fetch('/api/virtual-try-on', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        person_image_gcs_uri: person_image_path,
+                        apparel_gcs_uris: clothing_image_paths
+                    }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    loadingModal.hide();
+                    if (data.image_url) {
+                        const resultsContainer = document.getElementById('results-container');
+                        const resultsImageContainer = document.getElementById('results-image-container');
+                        resultsImageContainer.innerHTML = `<img src="${data.image_url}" class="img-fluid" alt="Virtual Try-On Result">`;
+                        resultsContainer.style.display = 'block';
+                    } else {
+                        alert('Error generating image: ' + (data.error || 'Unknown error'));
+                    }
+                })
+                .catch((error) => {
+                    loadingModal.hide();
+                    console.error('Error:', error);
+                    alert('Error sending virtual try-on request.');
+                });
             });
         });
     </script>

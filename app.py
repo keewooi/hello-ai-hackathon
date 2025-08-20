@@ -105,35 +105,18 @@ def imagen_route():
 
 @app.route('/api/virtual-try-on', methods=['POST'])
 def virtual_try_on_route():
-    person_image_path = None
-    if 'person_image_gcs_uri' in request.form:
-        person_image_path = convert_to_gs_uri(request.form['person_image_gcs_uri'])
-    elif 'person_image' in request.files:
-        person_image_file = request.files['person_image']
-        if person_image_file.filename != '':
-            person_image_filename = secure_filename(person_image_file.filename)
-            person_image_path = os.path.join(app.config['UPLOAD_FOLDER'], person_image_filename)
-            person_image_file.save(person_image_path)
+    data = request.get_json()
+    person_image_gcs_uri = data.get('person_image_gcs_uri')
+    apparel_gcs_uris = data.get('apparel_gcs_uris')
 
-    if not person_image_path:
-        return jsonify({'error': 'Person image (as file or GCS URI) is required'}), 400
+    if not person_image_gcs_uri:
+        return jsonify({'error': 'person_image_gcs_uri is required'}), 400
+    
+    if not apparel_gcs_uris:
+        return jsonify({'error': 'apparel_gcs_uris is required'}), 400
 
-    clothing_image_paths = []
-    if 'clothing_images' in request.files:
-        clothing_files = request.files.getlist('clothing_images')
-        for file in clothing_files:
-            if file.filename != '':
-                filename = secure_filename(file.filename)
-                path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-                file.save(path)
-                clothing_image_paths.append(path)
-
-    if 'apparel_gcs_uris' in request.form:
-        gcs_uris = request.form.getlist('apparel_gcs_uris')
-        clothing_image_paths.extend([convert_to_gs_uri(uri) for uri in gcs_uris])
-
-    if not clothing_image_paths:
-        return jsonify({'error': 'At least one clothing image (as file or GCS URI) is required'}), 400
+    person_image_path = convert_to_gs_uri(person_image_gcs_uri)
+    clothing_image_paths = [convert_to_gs_uri(uri) for uri in apparel_gcs_uris]
 
     try:
         generated_image = generate_virtual_try_on_image(person_image_path, clothing_image_paths)
@@ -183,6 +166,17 @@ def remove_from_virtual_try_on():
         images.remove(image_url)
         session['product_images'] = images
     return redirect(url_for('virtual'))
+
+@app.route('/api/virtual-try-on', methods=['POST'])
+def virtual_try_on():
+    data = request.get_json()
+    person_image_gcs_uri = data.get('person_image_gcs_uri')
+    apparel_gcs_uris = data.get('apparel_gcs_uris')
+
+    # Here you would call the gemini model for virtual try-on
+    # For now, we'll just return a placeholder image
+    image_url = "https://via.placeholder.com/600x800.png?text=Virtual+Try-On+Result"
+    return jsonify({'status': 'success', 'image_url': image_url})
 
 if __name__ == '__main__':
     os.makedirs(UPLOAD_FOLDER, exist_ok=True)
