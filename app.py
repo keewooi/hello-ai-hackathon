@@ -35,6 +35,7 @@ def convert_to_gs_uri(uri: str) -> str:
 def index():
     with open('products.json') as f:
         products = json.load(f)
+    
     return render_template('index.html', products=products)
 
 @app.route('/product/<int:product_id>')
