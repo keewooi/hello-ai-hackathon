@@ -2,9 +2,10 @@ import dotenv
 import gemini
 import json
 
-from flask import Flask, render_template, jsonify, request, send_file
+from flask import Flask, render_template, jsonify, request, send_file, session, redirect, url_for
 
 app = Flask(__name__)
+app.secret_key = 'super secret key'
 
 dotenv.load_dotenv()
 
@@ -42,6 +43,29 @@ def generate_image_route():
         return jsonify({'image_url': f'/{path}'})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+@app.route('/add_to_virtual_try_on')
+def add_to_virtual_try_on():
+    image_url = request.args.get('image_url')
+    images = session.get('product_images', [])
+    if image_url not in images:
+        images.append(image_url)
+        session['product_images'] = images
+    return redirect(url_for('virtual'))
+
+@app.route('/virtual')
+def virtual():
+    images = session.get('product_images', [])
+    return render_template('virtual.html', images=images)
+
+@app.route('/remove_from_virtual_try_on')
+def remove_from_virtual_try_on():
+    image_url = request.args.get('image_url')
+    images = session.get('product_images', [])
+    if image_url in images:
+        images.remove(image_url)
+        session['product_images'] = images
+    return redirect(url_for('virtual'))
 
 if __name__ == '__main__':
     app.run(debug=True)

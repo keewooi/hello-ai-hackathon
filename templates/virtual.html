@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ product.name }} - Uniglow</title>
+    <title>Virtual Try-On - Uniglow</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap" rel="stylesheet">
@@ -25,7 +25,7 @@
                         <a class="nav-link" href="/">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Products</a>
+                        <a class="nav-link" href="#">Products</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">About</a>
@@ -36,15 +36,44 @@
     </nav>
 
     <div class="container mt-5">
+        <h2 class="mb-4 text-center">Virtual Try-On</h2>
         <div class="row">
-            <div class="col-md-6">
-                <img src="{{ product.image_urls.medium }}" class="img-fluid" alt="{{ product.name }}">
+            <div class="col-md-8">
+                <h3>Selected Products</h3>
+                <div class="row">
+                    {% for image in images %}
+                    <div class="col-md-4 mb-4">
+                        <div class="position-relative">
+                            <img src="{{ image }}" class="img-fluid" alt="Product Image">
+                            <a href="{{ url_for('remove_from_virtual_try_on', image_url=image) }}" class="btn-close position-absolute top-0 end-0" aria-label="Close"></a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
-            <div class="col-md-6">
-                <h2>{{ product.name }}</h2>
-                <p>{{ product.description.long }}</p>
-                <p><i class="fas fa-star text-warning"></i> {{ product.rating }}</p>
-                <a href="{{ url_for('add_to_virtual_try_on', image_url=product.image_urls.large) }}" class="btn btn-primary">Virtual Try-On</a>
+            <div class="col-md-4">
+                <h3>Choose Your Model</h3>
+                <div class="mb-3">
+                    <label for="profile-pic" class="form-label">Upload your photo</label>
+                    <input class="form-control" type="file" id="profile-pic">
+                </div>
+                <p class="text-center">OR</p>
+                <h4>Select a model</h4>
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <img src="https://via.placeholder.com/150" class="img-fluid model-pic" alt="Model 1">
+                    </div>
+                    <div class="col-6 mb-3">
+                        <img src="https://via.placeholder.com/150" class="img-fluid model-pic" alt="Model 2">
+                    </div>
+                    <div class="col-6 mb-3">
+                        <img src="https://via.placeholder.com/150" class="img-fluid model-pic" alt="Model 3">
+                    </div>
+                    <div class="col-6 mb-3">
+                        <img src="https://via.placeholder.com/150" class="img-fluid model-pic" alt="Model 4">
+                    </div>
+                </div>
+                <button class="btn btn-primary w-100">Proceed</button>
             </div>
         </div>
     </div>
