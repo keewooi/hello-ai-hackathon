@@ -184,16 +184,30 @@ def generated_product():
     }
     return render_template('generated_product.html', product=product)
 
-@app.route('/api/virtual-try-on', methods=['POST'])
-def virtual_try_on():
-    data = request.get_json()
-    person_image_gcs_uri = data.get('person_image_gcs_uri')
-    apparel_gcs_uris = data.get('apparel_gcs_uris')
 
-    # Here you would call the gemini model for virtual try-on
-    # For now, we'll just return a placeholder image
-    image_url = "https://via.placeholder.com/600x800.png?text=Virtual+Try-On+Result"
-    return jsonify({'status': 'success', 'image_url': image_url})
+@app.route('/api/upload', methods=['POST'])
+def upload_file():
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file part'}), 400
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+    if file:
+        filename = secure_filename(file.filename)
+        
+        # Upload to GCS
+        storage_client = storage.Client()
+        bucket_name = GCS_BUCKET_NAME
+        if bucket_name.startswith("gs://"):
+            bucket_name = bucket_name[5:]
+        bucket = storage_client.bucket(bucket_name)
+        
+        # Add a timestamp to the filename to avoid overwriting files
+        blob = bucket.blob(f"uploads/{int(time.time())}_{filename}")
+        
+        blob.upload_from_file(file, content_type=file.content_type)
+        
+        return jsonify({'image_url': blob.public_url})
 
 if __name__ == '__main__':
     os.makedirs(UPLOAD_FOLDER, exist_ok=True)

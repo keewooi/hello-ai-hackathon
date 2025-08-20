@@ -58,6 +58,7 @@
                 <div class="mb-3">
                     <label for="profile-pic" class="form-label">Upload your photo</label>
                     <input class="form-control" type="file" id="profile-pic">
+                    <img id="image-preview" class="img-fluid mt-3" style="display: none;" alt="Image Preview">
                 </div>
                 <p class="text-center">OR</p>
                 <h4>Select a model</h4>
@@ -76,7 +77,7 @@
                         <img src="https://storage.googleapis.com/ksaw_thelook_ecommerce/static/model_4.jpg" class="img-fluid model-pic model-selection" data-model-id="4" alt="Model 4">
                     </div>
                 </div>
-                <button class="btn btn-primary w-100" id="proceed-btn">Proceed</button>
+                <button class="btn btn-primary w-100" id="proceed-btn" disabled>Proceed</button>
             </div>
         </div>
     </div>
@@ -122,6 +123,16 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const modelSelections = document.querySelectorAll('.model-selection');
+            const profilePicInput = document.getElementById('profile-pic');
+            const proceedBtn = document.getElementById('proceed-btn');
+            let uploadedImageUrl = null;
+
+            function checkCanProceed() {
+                const selectedModel = document.querySelector('.model-selection.selected');
+                const fileUploaded = profilePicInput.files.length > 0;
+                proceedBtn.disabled = !selectedModel && !fileUploaded;
+            }
+
             modelSelections.forEach(function(model) {
                 model.addEventListener('click', function() {
                     modelSelections.forEach(function(m) {
@@ -130,40 +141,78 @@
                         }
                     });
                     model.classList.toggle('selected');
-                    const selectedModelInput = document.getElementById('selected-model');
-                    if (model.classList.contains('selected')) {
-                        selectedModelInput.value = model.dataset.modelId;
-                    } else {
-                        selectedModelInput.value = '';
-                    }
+                    profilePicInput.value = ''; // Clear file input
+                    uploadedImageUrl = null;
+                    checkCanProceed();
                 });
             });
 
-            const proceedBtn = document.getElementById('proceed-btn');
+            profilePicInput.addEventListener('change', function(event) {
+                modelSelections.forEach(function(m) {
+                    m.classList.remove('selected');
+                });
+
+                const [file] = event.target.files;
+                const imagePreview = document.getElementById('image-preview');
+                if (file) {
+                    imagePreview.src = URL.createObjectURL(file);
+                    imagePreview.style.display = 'block';
+                } else {
+                    imagePreview.style.display = 'none';
+                }
+
+                checkCanProceed();
+            });
+
             proceedBtn.addEventListener('click', function() {
                 const selectedProducts = document.querySelectorAll('.product-image-container').length;
-                const selectedModel = document.getElementById('selected-model').value;
 
                 if (selectedProducts === 0) {
                     alert('Please select at least one product.');
                     return;
                 }
 
-                if (selectedModel === '') {
-                    alert('Please select a model.');
-                    return;
-                }
-
+                const file = profilePicInput.files[0];
                 const selectedModelImage = document.querySelector('.model-selection.selected');
-                if (!selectedModelImage) {
-                    alert('Please select a model.');
+
+                if (!file && !selectedModelImage) {
+                    alert('Please select a model or upload your photo.');
                     return;
                 }
-                const person_image_path = selectedModelImage.src;
-                const clothing_image_paths = Array.from(document.querySelectorAll('.product-image-container img')).map(img => img.src);
 
                 const loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
                 loadingModal.show();
+
+                if (file) {
+                    const formData = new FormData();
+                    formData.append('file', file);
+
+                    fetch('/api/upload', {
+                        method: 'POST',
+                        body: formData,
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.image_url) {
+                            uploadedImageUrl = data.image_url;
+                            proceedWithTryOn(uploadedImageUrl);
+                        } else {
+                            loadingModal.hide();
+                            alert('Error uploading image: ' + (data.error || 'Unknown error'));
+                        }
+                    })
+                    .catch(error => {
+                        loadingModal.hide();
+                        console.error('Error:', error);
+                        alert('Error uploading image.');
+                    });
+                } else {
+                    proceedWithTryOn(selectedModelImage.src);
+                }
+            });
+
+            function proceedWithTryOn(personImagePath) {
+                const clothing_image_paths = Array.from(document.querySelectorAll('.product-image-container img')).map(img => img.src);
 
                 fetch('/api/virtual-try-on', {
                     method: 'POST',
@@ -171,12 +220,13 @@
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        person_image_gcs_uri: person_image_path,
+                        person_image_gcs_uri: personImagePath,
                         apparel_gcs_uris: clothing_image_paths
                     }),
                 })
                 .then(response => response.json())
                 .then(data => {
+                    const loadingModal = bootstrap.Modal.getInstance(document.getElementById('loadingModal'));
                     loadingModal.hide();
                     if (data.image_url) {
                         const resultsContainer = document.getElementById('results-container');
@@ -188,11 +238,12 @@
                     }
                 })
                 .catch((error) => {
+                    const loadingModal = bootstrap.Modal.getInstance(document.getElementById('loadingModal'));
                     loadingModal.hide();
                     console.error('Error:', error);
                     alert('Error sending virtual try-on request.');
                 });
-            });
+            }
         });
     </script>
 </body>
