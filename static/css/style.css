@@ -57,3 +57,12 @@ footer {
 footer a:hover {
     color: #FFD700 !important;
 }
+
+.model-selection.selected {
+    border: 3px solid #0d6efd; /* Bootstrap primary color */
+    border-radius: 5px;
+}
+
+.model-pic {
+    cursor: pointer;
+}
