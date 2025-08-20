@@ -24,3 +24,4 @@ def generate_response(prompt, thinking_budget=0):
 
 def generate_image(prompt, path):
     #todo - use imagen to generate image and save it into a GCS bucket
+    return False
