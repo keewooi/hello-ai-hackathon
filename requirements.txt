@@ -1,3 +1,6 @@
-dotenv>=0.9.9
-flask>=3.1.1
-google-genai>=1.30.0
+Flask
+python-dotenv
+google-genai
+Pillow
+werkzeug
+google-cloud-storage
