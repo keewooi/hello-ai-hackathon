@@ -15,13 +15,14 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ url_for('static', filename='js/common.js') }}"></script>
     <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/generation.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
-            <a class="navbar-brand" href="#">Uniglow</a>
+            <a class="navbar-brand" href="#">UNIGLOW</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -44,46 +45,48 @@
     <div class="container mt-5">
         <h2 class="mb-4 text-center">Our Products</h2>
         <div class="row">
+            {% for product in products %}
             <div class="col-md-4 mb-4">
                 <div class="card product-card">
-                    <img src="https://placehold.co/300x400?text=Stylish+Jacket" class="card-img-top" alt="Stylish Jacket">
-                    <div class="card-body">
-                        <h5 class="card-title">Stylish Jacket</h5>
-                        <p class="card-text">$129.99</p>
-                        <a href="#" class="btn btn-primary w-100">Virtual Try-On</a>
-                    </div>
+                    <a href="{{ url_for('product', product_id=product.id) }}" class="text-decoration-none text-dark">
+                        <img src="{{ product.image_urls.small }}" class="card-img-top" alt="{{ product.name }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            <p class="card-text">{{ product.description }}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <p class="card-text"><i class="fas fa-star text-warning"></i> {{ product.rating }}</p>
+                                
+                            </div>
+                        </div>
+                    </a>
                 </div>
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="card product-card">
-                    <img src="https://placehold.co/300x400?text=Modern+Sunglasses" class="card-img-top" alt="Modern Sunglasses">
-                    <div class="card-body">
-                        <h5 class="card-title">Modern Sunglasses</h5>
-                        <p class="card-text">$49.99</p>
-                        <a href="#" class="btn btn-primary w-100">Virtual Try-On</a>
-                    </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <h2 class="mb-4 text-center">Can't find what you're looking for?</h2>
+        <p class="text-center">Describe the product you have in mind, and we can generate an image for you!</p>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="mb-3">
+                    <textarea class="form-control" id="product-description" rows="3" placeholder="e.g., a red summer dress with white polka dots"></textarea>
                 </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card product-card">
-                    <img src="https://placehold.co/300x400?text=Classic+Hat" class="card-img-top" alt="Classic Hat">
-                    <div class="card-body">
-                        <h5 class="card-title">Classic Hat</h5>
-                        <p class="card-text">$39.99</p>
-                        <a href="#" class="btn btn-primary w-100">Virtual Try-On</a>
-                    </div>
+                <div class="text-center">
+                    <button class="btn btn-primary" id="generate-image-btn">Generate Image</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <footer class="bg-dark text-white text-center p-4 mt-5">
+    <footer class="bg-light text-dark text-center p-4 mt-5">
         <div class="container">
             <p>&copy; 2025 Uniglow. All Rights Reserved.</p>
             <div>
-                <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
-                <a href="#" class="text-white"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="text-dark me-3"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-dark me-3"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="text-dark"><i class="fab fa-facebook-f"></i></a>
             </div>
         </div>
     </footer>

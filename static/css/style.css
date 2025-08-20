@@ -2,8 +2,8 @@ body {
     font-family: "Raleway", serif !important;
     font-optical-sizing: auto;
     font-style: normal;
-    background: #000000 !important;
-    color: #aaa !important;
+    background: #ffffff !important;
+    color: #212529 !important;
 }
 
 .navbar-brand {
@@ -11,26 +11,30 @@ body {
     font-size: 1.5rem;
 }
 
+.navbar {
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+}
+
 .product-card {
-    background-color: #1a1a1a;
-    border: 1px solid #333;
-    color: #fff;
-    transition: transform 0.2s;
-    border-radius: 10px; /* Add rounded corners */
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    color: #212529;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border-radius: 10px;
 }
 
 .product-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.1); /* Add a subtle glow on hover */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .product-card .card-title {
-    color: #fff;
+    color: #212529;
     font-weight: bold;
 }
 
 .product-card .card-text {
-    color: #ccc;
+    color: #6c757d;
 }
 
 .btn-primary {
@@ -47,7 +51,7 @@ body {
 }
 
 footer {
-    border-top: 1px solid #333;
+    border-top: 1px solid #dee2e6;
 }
 
 footer a:hover {

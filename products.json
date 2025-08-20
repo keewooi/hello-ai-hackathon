@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1,
+    "image_urls": {
+      "small": "https://placehold.co/150x200?text=Stylish+Jacket",
+      "medium": "https://placehold.co/300x400?text=Stylish+Jacket",
+      "large": "https://placehold.co/600x800?text=Stylish+Jacket"
+    },
+    "name": "Stylish Jacket",
+    "description": "A stylish jacket to keep you warm and fashionable.",
+    "rating": 4.5
+  },
+  {
+    "id": 2,
+    "image_urls": {
+      "small": "https://placehold.co/150x200?text=Modern+Sunglasses",
+      "medium": "https://placehold.co/300x400?text=Modern+Sunglasses",
+      "large": "https://placehold.co/600x800?text=Modern+Sunglasses"
+    },
+    "name": "Modern Sunglasses",
+    "description": "Protect your eyes with these modern and stylish sunglasses.",
+    "rating": 4.8
+  },
+  {
+    "id": 3,
+    "image_urls": {
+      "small": "https://placehold.co/150x200?text=Classic+Hat",
+      "medium": "https://placehold.co/300x400?text=Classic+Hat",
+      "large": "https://placehold.co/600x800?text=Classic+Hat"
+    },
+    "name": "Classic Hat",
+    "description": "A classic hat to complete your look.",
+    "rating": 4.2
+  },
+  {
+    "id": 4,
+    "image_urls": {
+      "small": "https://placehold.co/150x200?text=Comfy+Sneakers",
+      "medium": "https://placehold.co/300x400?text=Comfy+Sneakers",
+      "large": "https://placehold.co/600x800?text=Comfy+Sneakers"
+    },
+    "name": "Comfy Sneakers",
+    "description": "A pair of comfortable sneakers for your daily walks.",
+    "rating": 4.6
+  },
+  {
+    "id": 5,
+    "image_urls": {
+      "small": "https://placehold.co/150x200?text=Leather+Backpack",
+      "medium": "https://placehold.co/300x400?text=Leather+Backpack",
+      "large": "https://placehold.co/600x800?text=Leather+Backpack"
+    },
+    "name": "Leather Backpack",
+    "description": "A durable and stylish leather backpack for all your needs.",
+    "rating": 4.7
+  },
+  {
+    "id": 6,
+    "image_urls": {
+      "small": "https://placehold.co/150x200?text=Elegant+Watch",
+      "medium": "https://placehold.co/300x400?text=Elegant+Watch",
+      "large": "https://placehold.co/600x800?text=Elegant+Watch"
+    },
+    "name": "Elegant Watch",
+    "description": "An elegant watch to complement your formal attire.",
+    "rating": 4.9
+  }
+]
