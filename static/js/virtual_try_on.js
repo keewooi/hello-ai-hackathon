@@ -1,8 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const resultsContainer = document.getElementById('results-container');
-    if (resultsContainer && resultsContainer.style.display !== 'none' && resultsContainer.querySelector('img')) {
-        return;
-    }
     const uploadTab = document.getElementById('upload-tab');
     const modelTab = document.getElementById('model-tab');
     const uploadSection = document.getElementById('upload-section');
