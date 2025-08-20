@@ -19,7 +19,7 @@ def rewrite_prompt(prompt: str) -> str:
     Returns:
         The rewritten prompt.
     """
-    rewrite_model = "gemini-2.5-flash"
+    rewrite_model = "gemini-2.5-pro"
     response = client.models.generate_content(
         model=rewrite_model,
         contents=[f"You are a fashion expert and also an expert in LLM Prompting for Google's Image Generation Model, Imagen. "
@@ -48,7 +48,7 @@ def generate_image(prompt: str) -> PIL_Image.Image:
     Returns:
         The generated image as a PIL Image object.
     """
-    generation_model = "imagen-4.0-generate-001"
+    generation_model = "imagen-4.0-fast-generate-001"
     
     response = client.models.generate_images(
         model=generation_model,
