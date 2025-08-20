@@ -11,6 +11,23 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+    <style>
+        .image-preview-container {
+            position: relative;
+            display: inline-block;
+        }
+        .image-preview-container .btn-close {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            display: none;
+        }
+        .image-preview-container:hover .btn-close {
+            display: block;
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -58,7 +75,10 @@
                 <div class="mb-3">
                     <label for="profile-pic" class="form-label">Upload your photo</label>
                     <input class="form-control" type="file" id="profile-pic">
-                    <img id="image-preview" class="img-fluid mt-3" style="display: none;" alt="Image Preview">
+                    <div id="image-preview-container" class="image-preview-container mt-3" style="display: none;">
+                        <img id="image-preview" class="img-fluid" alt="Image Preview">
+                        <button type="button" class="btn-close" id="remove-image-btn" aria-label="Close"></button>
+                    </div>
                 </div>
                 <p class="text-center">OR</p>
                 <h4>Select a model</h4>
@@ -154,13 +174,23 @@
 
                 const [file] = event.target.files;
                 const imagePreview = document.getElementById('image-preview');
+                const imagePreviewContainer = document.getElementById('image-preview-container');
                 if (file) {
                     imagePreview.src = URL.createObjectURL(file);
-                    imagePreview.style.display = 'block';
+                    imagePreviewContainer.style.display = 'block';
                 } else {
-                    imagePreview.style.display = 'none';
+                    imagePreviewContainer.style.display = 'none';
                 }
 
+                checkCanProceed();
+            });
+
+            document.getElementById('remove-image-btn').addEventListener('click', function() {
+                profilePicInput.value = '';
+                const imagePreview = document.getElementById('image-preview');
+                const imagePreviewContainer = document.getElementById('image-preview-container');
+                imagePreview.src = '';
+                imagePreviewContainer.style.display = 'none';
                 checkCanProceed();
             });
 
