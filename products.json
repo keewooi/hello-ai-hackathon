@@ -1,86 +1,178 @@
 [
   {
     "id": 1,
+    "category": "Jackets",
     "image_urls": {
-      "small": "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/24345.jpg",
-      "medium": "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/24345.jpg",
-      "large": "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/24345.jpg"
+      "small": "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/17287.jpg",
+      "medium": "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/17287.jpg",
+      "large": "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/17287.jpg",
+      "small_set": [
+        "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/17287.jpg",
+        "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/17287.jpg",
+        "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/17287.jpg"
+      ]
     },
-    "name": "Stylish Jacket",
+    "name": "Stylish Hoodie",
     "description": {
-      "short": "A stylish jacket to keep you warm and fashionable.",
+      "short": "A stylish hoodie to keep you warm and fashionable.",
       "long": "Made from a blend of wool and recycled polyester, this jacket is not only stylish but also sustainable. It features a classic notched lapel, a single-breasted front with button closures, and two front flap pockets. The tailored fit and fully lined interior ensure a comfortable and flattering silhouette. Perfect for transitioning between seasons, this versatile jacket can be dressed up or down for any occasion."
     },
-    "rating": 4.5
+    "price": 149.99,
+    "sizes": ["XS", "S", "M", "L", "XL"],
+    "colors": [
+      {"name": "Red", "hex": "#FF0000"},
+      {"name": "Blue", "hex": "#0000FF"},
+      {"name": "Green", "hex": "#00FF00"}
+    ],
+    "rating": 4.5,
+    "reviews": [
+      {
+        "author": "Sophia Bennett",
+        "date": "2 months ago",
+        "rating": 5,
+        "comment": "Absolutely love this dress! The color is vibrant, and the fit is perfect. I received so many compliments when I wore it to a wedding.",
+        "avatar": "https://lh3.googleusercontent.com/aida-public/AB6AXuDkAvDERg20UW6833KGBay3S_Wnqfko-i7qSh7id-LkzFBp9k7sYwDJvHjYp6fXKBo--0TkdD4YpZY_GI3FadkeWQ3iNQUozkIqFpek7jYeV6pqHpvX0KPdVNkzcEFjvkXwFElH2Vo0QKxCHobNUt4UDa2gDRPfasctm2jEQ2lphGDigjNWyXBuJ-BrawLiIiEPv8zeqQEmZrqoxHUn8LJDouIrh9xyj9AegSqYaWdyjy5a6KqsiCKlDTMwOC3o8y28fPFVnIQfo7E_"
+      },
+      {
+        "author": "Olivia Carter",
+        "date": "3 months ago",
+        "rating": 4,
+        "comment": "The dress is beautiful and well-made. The only reason I didn't give it 5 stars is that the material is a bit delicate and requires extra care.",
+        "avatar": "https://lh3.googleusercontent.com/aida-public/AB6AXuBvh-FQIX4cSHa4y-GVtydm_2hFo308lU81gisoYiWi1xlXUSCaTrz4Cev8Zv-AIUsc3Amce3FjphHQVolNuK3sKvcdpwXwaI_qj_mfCqpE9hv7t7OPcGaIHbDsZP7XHaNX9iDUJaHoCifNryhU3FQMLTBFczvJ6Zzy8Zf2YpXYGhKwtp1YwzlwfkmwQoB0X5ZjwnrCEsaP93JTfRFMXpcq9APoxyDP-_Bs0Yw-62MTmtRed0iOsNqe7TS-VLVMNRz9wPcdukkeCgE8"
+      }
+    ]
   },
   {
     "id": 2,
+    "category": "Accessories",
     "image_urls": {
-      "small": "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/20342.jpg",
-      "medium": "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/20342.jpg",
-      "large": "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/20342.jpg"
+      "small": "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/15452.jpg",
+      "medium": "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/15452.jpg",
+      "large": "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/15452.jpg",
+      "small_set": [
+        "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/15452.jpg",
+        "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/15452.jpg",
+        "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/15452.jpg"
+      ]
     },
-    "name": "Modern Sunglasses",
+    "name": "Bucket Hat",
     "description": {
-      "short": "Protect your eyes with these modern and stylish sunglasses.",
-      "long": "These sunglasses feature a lightweight yet durable frame crafted from premium acetate. The polarized lenses offer 100% UV protection, reducing glare and enhancing visual clarity. With a sleek, contemporary design, these sunglasses are the perfect accessory for sunny days, whether you're at the beach or strolling through the city. The adjustable nose pads ensure a comfortable and secure fit for all-day wear."
+      "short": "Keep the head warm!",
+      "long": "These hat feature a lightweight yet durable frame crafted from premium straw."
     },
-    "rating": 4.8
+    "price": 79.99,
+    "sizes": ["One Size"],
+    "colors": [
+      {"name": "Black", "hex": "#000000"},
+      {"name": "Tortoise", "hex": "#966919"}
+    ],
+    "rating": 4.8,
+    "reviews": []
   },
   {
     "id": 3,
+    "category": "Dress",
     "image_urls": {
-      "small": "https://placehold.co/150x150?text=Classic+Hat",
-      "medium": "https://placehold.co/300x300?text=Classic+Hat",
-      "large": "https://placehold.co/600x600?text=Classic+Hat"
+      "small": "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/3462.jpg",
+      "medium": "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/3462.jpg",
+      "large": "https://storage.googleapis.com/ksaw_thelook_ecommerce/images/3462.jpg",
+      "small_set": [
+        "https://placehold.co/150x150?text=Placeholder"
+      ]
     },
-    "name": "Classic Hat",
+    "name": "Drawstring Waist Full Length Dress",
     "description": {
-      "short": "A classic hat to complete your look.",
-      "long": "This timeless hat is crafted from 100% wool felt, offering both style and warmth. It features a traditional fedora shape with a pinched crown, a wide brim to shield you from the sun, and a grosgrain ribbon band for a touch of elegance. Whether you're dressing up for a special event or adding a sophisticated touch to your everyday outfit, this classic hat is a must-have accessory."
+      "short": "A classic dress.",
+      "long": "This timeless dress is crafted from 100% cotton, offering both style and warmth."
     },
-    "rating": 4.2
+    "price": 59.99,
+    "sizes": ["S", "M", "L"],
+    "colors": [
+        {"name": "Black", "hex": "#000000"},
+        {"name": "Gray", "hex": "#808080"}
+    ],
+    "rating": 4.2,
+    "reviews": []
   },
   {
     "id": 4,
+    "category": "Shoes",
     "image_urls": {
       "small": "https://placehold.co/150x150?text=Comfy+Sneakers",
       "medium": "https://placehold.co/300x300?text=Comfy+Sneakers",
-      "large": "https://placehold.co/600x600?text=Comfy+Sneakers"
+      "large": "https://placehold.co/600x600?text=Comfy+Sneakers",
+        "small_set": [
+            "https://placehold.co/150x150?text=Comfy+Sneakers",
+            "https://placehold.co/150x150?text=Comfy+Sneakers",
+            "https://placehold.co/150x150?text=Comfy+Sneakers"
+        ]
     },
     "name": "Comfy Sneakers",
     "description": {
       "short": "A pair of comfortable sneakers for your daily walks.",
       "long": "Engineered for comfort and performance, these sneakers are perfect for your active lifestyle. The breathable mesh upper keeps your feet cool and dry, while the cushioned insole provides excellent support and shock absorption. The durable rubber outsole offers superior traction on various surfaces. With their lightweight construction and flexible design, these sneakers will keep you comfortable all day long."
     },
-    "rating": 4.6
+    "price": 89.99,
+    "sizes": ["7", "8", "9", "10", "11"],
+    "colors": [
+        {"name": "White", "hex": "#FFFFFF"},
+        {"name": "Black", "hex": "#000000"}
+    ],
+    "rating": 4.6,
+    "reviews": []
   },
   {
     "id": 5,
+    "category": "Accessories",
     "image_urls": {
       "small": "https://placehold.co/150x150?text=Leather+Backpack",
       "medium": "https://placehold.co/300x300?text=Leather+Backpack",
-      "large": "https://placehold.co/600x600?text=Leather+Backpack"
+      "large": "https://placehold.co/600x600?text=Leather+Backpack",
+        "small_set": [
+            "https://placehold.co/150x150?text=Leather+Backpack",
+            "https://placehold.co/150x150?text=Leather+Backpack",
+            "https://placehold.co/150x150?text=Leather+Backpack"
+        ]
     },
     "name": "Leather Backpack",
     "description": {
       "short": "A durable and stylish leather backpack for all your needs.",
       "long": "Crafted from genuine full-grain leather, this backpack combines style and functionality. It features a spacious main compartment with a padded laptop sleeve, multiple interior pockets for organization, and a front zip pocket for easy access to your essentials. The adjustable shoulder straps and padded back panel ensure a comfortable carry, making it the perfect companion for work, travel, or everyday adventures."
     },
-    "rating": 4.7
+    "price": 129.99,
+    "sizes": ["One Size"],
+    "colors": [
+        {"name": "Brown", "hex": "#A52A2A"},
+        {"name": "Black", "hex": "#000000"}
+    ],
+    "rating": 4.7,
+    "reviews": []
   },
   {
     "id": 6,
+    "category": "Accessories",
     "image_urls": {
       "small": "https://placehold.co/150x150?text=Elegant+Watch",
       "medium": "https://placehold.co/300x300?text=Elegant+Watch",
-      "large": "https://placehold.co/600x600?text=Elegant+Watch"
+      "large": "https://placehold.co/600x600?text=Elegant+Watch",
+        "small_set": [
+            "https://placehold.co/150x150?text=Elegant+Watch",
+            "https://placehold.co/150x150?text=Elegant+Watch",
+            "https://placehold.co/150x150?text=Elegant+Watch"
+        ]
     },
     "name": "Elegant Watch",
     "description": {
       "short": "An elegant watch to complement your formal attire.",
       "long": "This exquisite watch is a masterpiece of precision and style. It features a polished stainless steel case, a sapphire crystal glass for scratch resistance, and a sophisticated sunray dial with luminous hands and markers. The reliable quartz movement ensures accurate timekeeping. With its classic design and water-resistant construction, this elegant watch is the perfect accessory for any formal occasion."
     },
-    "rating": 4.9
+    "price": 249.99,
+    "sizes": ["One Size"],
+    "colors": [
+        {"name": "Silver", "hex": "#C0C0C0"},
+        {"name": "Gold", "hex": "#FFD700"}
+    ],
+    "rating": 4.9,
+    "reviews": []
   }
 ]

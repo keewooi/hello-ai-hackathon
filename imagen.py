@@ -9,7 +9,7 @@ PROJECT_ID = os.environ.get("GOOGLE_CLOUD_PROJECT")
 LOCATION = os.environ.get("GOOGLE_CLOUD_REGION", "us-central1")
 client = genai.Client(vertexai=True, project=PROJECT_ID, location=LOCATION)
 
-def rewrite_prompt(prompt: str) -> str:
+def rewrite_prompt(prompt: str) -> tuple[str, str]:
     """
     Rewrites a given prompt using the Gemini API for better image generation.
 
@@ -23,20 +23,23 @@ def rewrite_prompt(prompt: str) -> str:
     response = client.models.generate_content(
         model=rewrite_model,
         contents=[f"You are a fashion expert and also an expert in LLM Prompting for Google's Image Generation Model, Imagen. "
-                  f"The intention is for the user to describe their ideal piece of clothing based on either describing the clothing itself, or the overall mood and feel. "
-                  f"The user may express vague descriptions based on how they feel which is completely acceptable. "
-                  f"Rewrite the following prompt into a single, enhanced prompt for a text-to-image model. "
+                  f"The user wants to describe their ideal piece of clothing. "
+                  f"First, create a short, catchy title (5 words or less) for the clothing item. "
+                  f"Then, rewrite the following prompt into a single, enhanced prompt for a text-to-image model. "
                   f"Focus on creating a visually rich and detailed description of a **single** piece of clothing. Do not provide multiple options or explanations. "
                   f"The image must be in the style of professional studio photography. "
                   f"The image must not include a model, just the **single** piece of clothing. "
                   f"If no gender is specified, default to a gender neutral style. "
-                  f"Directly output the rewritten prompt. Original prompt: '{prompt}'"]
+                  f"Output the title and the rewritten prompt on separate lines, with the title first. "
+                  f"Original prompt: '{prompt}'"]
     )
     # The model sometimes still returns the prompt in quotes, so we remove them.
-    rewritten = response.text.strip()
+    parts = response.text.strip().split('\n')
+    title = parts[0]
+    rewritten = '\n'.join(parts[1:])
     if rewritten.startswith('"') and rewritten.endswith('"'):
         rewritten = rewritten[1:-1]
-    return rewritten
+    return rewritten, title
 
 def generate_image(prompt: str) -> PIL_Image.Image:
     """

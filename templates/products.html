@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block title %}Products - StyleHub{% endblock %}
+
+{% block content %}
+<div class="gap-1 px-6 flex flex-1 justify-center py-5">
+  <div class="layout-content-container flex flex-col w-80">
+    <h3 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Filters</h3>
+    <h4 class="text-neutral-500 text-sm font-bold leading-normal tracking-[0.015em] px-4 py-2 text-center">Size</h4>
+    <div class="px-4">
+      <label class="flex gap-x-3 py-3 flex-row">
+        <input
+          type="checkbox"
+          class="h-5 w-5 rounded border-[#dbdbdb] border-2 bg-transparent text-[#141414] checked:bg-[#141414] checked:border-[#141414] checked:bg-[image:--checkbox-tick-svg] focus:ring-0 focus:ring-offset-0 focus:border-[#dbdbdb] focus:outline-none"
+        />
+        <p class="text-[#141414] text-base font-normal leading-normal">XS</p>
+      </label>
+      <label class="flex gap-x-3 py-3 flex-row">
+        <input
+          type="checkbox"
+          class="h-5 w-5 rounded border-[#dbdbdb] border-2 bg-transparent text-[#141414] checked:bg-[#141414] checked:border-[#141414] checked:bg-[image:--checkbox-tick-svg] focus:ring-0 focus:ring-offset-0 focus:border-[#dbdbdb] focus:outline-none"
+        />
+        <p class="text-[#141414] text-base font-normal leading-normal">S</p>
+      </label>
+      <label class="flex gap-x-3 py-3 flex-row">
+        <input
+          type="checkbox"
+          class="h-5 w-5 rounded border-[#dbdbdb] border-2 bg-transparent text-[#141414] checked:bg-[#141414] checked:border-[#141414] checked:bg-[image:--checkbox-tick-svg] focus:ring-0 focus:ring-offset-0 focus:border-[#dbdbdb] focus:outline-none"
+        />
+        <p class="text-[#141414] text-base font-normal leading-normal">M</p>
+      </label>
+      <label class="flex gap-x-3 py-3 flex-row">
+        <input
+          type="checkbox"
+          class="h-5 w-5 rounded border-[#dbdbdb] border-2 bg-transparent text-[#141414] checked:bg-[#141414] checked:border-[#141414] checked:bg-[image:--checkbox-tick-svg] focus:ring-0 focus:ring-offset-0 focus:border-[#dbdbdb] focus:outline-none"
+        />
+        <p class="text-[#141414] text-base font-normal leading-normal">L</p>
+      </label>
+      <label class="flex gap-x-3 py-3 flex-row">
+        <input
+          type="checkbox"
+          class="h-5 w-5 rounded border-[#dbdbdb] border-2 bg-transparent text-[#141414] checked:bg-[#141414] checked:border-[#141414] checked:bg-[image:--checkbox-tick-svg] focus:ring-0 focus:ring-offset-0 focus:border-[#dbdbdb] focus:outline-none"
+        />
+        <p class="text-[#141414] text-base font-normal leading-normal">XL</p>
+      </label>
+    </div>
+    <h4 class="text-neutral-500 text-sm font-bold leading-normal tracking-[0.015em] px-4 py-2 text-center">Color</h4>
+    <div class="flex flex-wrap gap-5 p-4">
+      <label
+        class="size-10 rounded-full border border-[#dbdbdb] ring-[color-mix(in_srgb,#141414_50%,_transparent)] has-[:checked]:border-[3px] has-[:checked]:border-neutral-50 has-[:checked]:ring"
+        style="background-color: #556F44;"
+      >
+        <input type="radio" class="invisible" name="e9e216c2-8374-4e87-b3ff-ef98e025a079" />
+      </label>
+      <label
+        class="size-10 rounded-full border border-[#dbdbdb] ring-[color-mix(in_srgb,#141414_50%,_transparent)] has-[:checked]:border-[3px] has-[:checked]:border-neutral-50 has-[:checked]:ring"
+        style="background-color: #44344F;"
+      >
+        <input type="radio" class="invisible" name="e9e216c2-8374-4e87-b3ff-ef98e025a079" />
+      </label>
+      <label
+        class="size-10 rounded-full border border-[#dbdbdb] ring-[color-mix(in_srgb,#141414_50%,_transparent)] has-[:checked]:border-[3px] has-[:checked]:border-neutral-50 has-[:checked]:ring"
+        style="background-color: #564D80;"
+      >
+        <input type="radio" class="invisible" name="e9e216c2-8374-4e87-b3ff-ef98e025a079" />
+      </label>
+      <label
+        class="size-10 rounded-full border border-[#dbdbdb] ring-[color-mix(in_srgb,#141414_50%,_transparent)] has-[:checked]:border-[3px] has-[:checked]:border-neutral-50 has-[:checked]:ring"
+        style="background-color: #98A6D4;"
+      >
+        <input type="radio" class="invisible" name="e9e216c2-8374-4e87-b3ff-ef98e025a079" />
+      </label>
+      <label
+        class="size-10 rounded-full border border-[#dbdbdb] ring-[color-mix(in_srgb,#141414_50%,_transparent)] has-[:checked]:border-[3px] has-[:checked]:border-neutral-50 has-[:checked]:ring"
+        style="background-color: #E9F7CA;"
+      >
+        <input type="radio" class="invisible" name="e9e216c2-8374-4e87-b3ff-ef98e025a079" />
+      </label>
+    </div>
+    <h4 class="text-neutral-500 text-sm font-bold leading-normal tracking-[0.015em] px-4 py-2 text-center">Price</h4>
+    <div class="@container">
+      <div class="relative flex w-full flex-col items-start justify-between gap-3 p-4 @[480px]:flex-row">
+        <p class="text-[#141414] text-base font-medium leading-normal w-full shrink-[3]">Price Range</p>
+        <div class="flex h-[38px] w-full pt-1.5">
+          <div class="flex h-1 w-full rounded-sm bg-[#dbdbdb] pl-[60%] pr-[15%]">
+            <div class="relative">
+              <div class="absolute -left-3 -top-1.5 flex flex-col items-center gap-1">
+                <div class="size-4 rounded-full bg-[#141414]"></div>
+                <p class="text-[#141414] text-sm font-normal leading-normal">$20</p>
+              </div>
+            </div>
+            <div class="h-1 flex-1 rounded-sm bg-[#141414]"></div>
+            <div class="relative">
+              <div class="absolute -left-3 -top-1.5 flex flex-col items-center gap-1">
+                <div class="size-4 rounded-full bg-[#141414]"></div>
+                <p class="text-[#141414] text-sm font-normal leading-normal">$100</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+    <div class="flex flex-wrap gap-2 p-4">
+      <a class="text-neutral-500 text-base font-medium leading-normal" href="{{ url_for('index') }}">Home</a>
+      <span class="text-neutral-500 text-base font-medium leading-normal">/</span>
+      <span class="text-[#141414] text-base font-medium leading-normal">Products</span>
+    </div>
+    <div class="flex flex-wrap justify-between gap-3 p-4"><p class="text-[#141414] tracking-light text-[32px] font-bold leading-tight min-w-72">All Products</p></div>
+    <div class="pb-3">
+      <div class="flex border-b border-[#dbdbdb] px-4 gap-8">
+        <a class="flex flex-col items-center justify-center border-b-[3px] border-b-[#141414] text-[#141414] pb-[13px] pt-4" href="#">
+          <p class="text-[#141414] text-sm font-bold leading-normal tracking-[0.015em]">Newest</p>
+        </a>
+        <a class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-neutral-500 pb-[13px] pt-4" href="#">
+          <p class="text-neutral-500 text-sm font-bold leading-normal tracking-[0.015em]">Price: Low to High</p>
+        </a>
+        <a class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-neutral-500 pb-[13px] pt-4" href="#">
+          <p class="text-neutral-500 text-sm font-bold leading-normal tracking-[0.015em]">Price: High to Low</p>
+        </a>
+      </div>
+    </div>
+    <div class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3 p-4">
+      {% for product in products %}
+      <div class="flex flex-col gap-3 pb-3">
+        <a href="{{ url_for('product', product_id=product.id) }}">
+            <div
+              class="w-full bg-center bg-no-repeat aspect-[3/4] bg-cover rounded-lg"
+              style='background-image: url("{{ product.image_urls.small }}");'
+            ></div>
+        </a>
+        <div>
+          <p class="text-[#141414] text-base font-medium leading-normal">{{ product.name }}</p>
+          <p class="text-neutral-500 text-sm font-normal leading-normal">${{ product.price }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="bg-gray-100 p-8 rounded-lg mt-10">
+        <h2 class="text-2xl font-bold text-center mb-4">Can't find what you're looking for?</h2>
+        <p class="text-center mb-6">Describe the product you have in mind, and we can generate an image for you!</p>
+        <div class="max-w-lg mx-auto">
+            <div class="mb-4">
+                <textarea class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="product-description" rows="3" placeholder="e.g., a red summer dress with white polka dots"></textarea>
+            </div>
+            <div class="flex justify-center">
+                <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg flex items-center" id="generate-image-btn">
+                    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>Generate Inspiration!</span>
+                </button>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

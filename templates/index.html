@@ -1,99 +1,79 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Uniglow</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+{% extends "base.html" %}
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="{{ url_for('static', filename='js/common.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/generation.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <a class="navbar-brand" href="/">
-                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Uniglow Logo" height="50">
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Products</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
-                    </li>
-                    <li class="nav-item">
-                       <a class="nav-link" href="{{ url_for('virtual') }}">Virtual Try-On</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+{% block title %}StyleHub - Home{% endblock %}
 
-    <div class="container mt-5">
-        <h2 class="mb-4 text-center">Our Products</h2>
-        <div class="row">
-            {% for product in products %}
-            <div class="col-md-4 mb-4">
-                <div class="card product-card">
-                    <a href="{{ url_for('product', product_id=product.id) }}" class="text-decoration-none text-dark">
-                        <img src="{{ product.image_urls.small }}" class="card-img-top" alt="{{ product.name }}">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ product.name }}</h5>
-                            <p class="card-text">{{ product.description.short }}</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <p class="card-text"><i class="fas fa-star text-warning"></i> {{ product.rating }}</p>
-                                
-                            </div>
-                        </div>
-                    </a>
+{% block content %}
+        <div class="px-40 flex flex-1 justify-center py-5">
+          <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+            <div class="@container">
+              <div class="@[480px]:px-4 @[480px]:py-3">
+                <div
+                  class="bg-cover bg-center flex flex-col justify-end overflow-hidden bg-neutral-50 @[480px]:rounded-lg min-h-80"
+                  style='background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 25%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuAhT1fzWT1F20QuR9Lq1ZV1FrBS6KxjwTqOQPDTRjsW9atzUOTsZOTfhRQ6WrAGZDMzjinlm7O1M6p0HBlg0rnKw2pzcbAYzqPws1gJKYoC2KF_2u9XhYgcam-5v9NBGssGdtYvTojCKKGw4cjTfcKcftWRdTrizOu4ol9R3jnRck0jlYMgD8GR4OEyv61wGCYfHDp90NLT64tbsKElE4gQmX23Lv7LD9puiTQBs6HOlnbWvRSxjKeQ-OtLu2WfDUtBoP0lBwZt6LYd");'
+                >
+                  <div class="flex p-4"><p class="text-white tracking-light text-[28px] font-bold leading-tight">Summer Collection</p></div>
                 </div>
+              </div>
             </div>
-            {% endfor %}
-        </div>
-    </div>
-
-    <div class="container mt-5">
-        <h2 class="mb-4 text-center">Can't find what you're looking for?</h2>
-        <p class="text-center">Describe the product you have in mind, and we can generate an image for you!</p>
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="mb-3">
-                    <textarea class="form-control" id="product-description" rows="3" placeholder="e.g., a red summer dress with white polka dots"></textarea>
+            <h2 class="text-[#141414] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Featured Categories</h2>
+            <div class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3 p-4">
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg"
+                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDxcTTJRXuKNfBtdkX2cpXwRU0_Wja8N0d0Xtn_gMQ6555F-I08qbe3iEILb0yycfM_80xS29U4hr9sMGLDsbKpJICiMbQI4FIDGpKGcVMIYngPc-kTPUJHwoiZKVSOV6IzOu6VZcK9ZO_cHI4vHAiI8YBJ9aMZ36IIbSNYeuyWv4GBd-Rv1-evRmsjyS4fN-goE5Myzvb4bb6jr8jUFU8JgIiPGdolrs1xK9IZFHuyUY1NenD1womGLAinZtHy_3GKdc6Y7CQpI-gO");'
+                ></div>
+                <p class="text-[#141414] text-base font-medium leading-normal">Men's Fashion</p>
+              </div>
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg"
+                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBGrN5zWk9zZwyJtUZkC1TpUR2JdHnSG4uoHHIu492x3apkhrZRuGPakzvQiXCF0AxRhm2hWQPCoWkcQ-J17rLxCRTp7cUujUG6_1v_dOZKhfoJowo21PZNQYay8Hf-nG_0qNJy2N60vZoHueTzijjBOvrhAiv3I_QqLgGZq-s4W6X4CZoJuxBysj9_AiF5-H3OCyf1plKVgIF9fFknkU5bQqoTuldLILonjE-6DeUJdSguOit-w2LNk4ApsPZjR1Gj9568g1uKduwT");'
+                ></div>
+                <p class="text-[#141414] text-base font-medium leading-normal">Women's Fashion</p>
+              </div>
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg"
+                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAmEEYinUfGHLTEeCnkct6z9QgmaGFPFwJCWwv3QmW4Daq7dEJhOQ8GOi14c-fP4XuLv4VFjluY89sSJDQvw3ZTxi60bs2EhvJs4Y3NGkgizW77PgeHsztxanw-DbMH_2UwWg-cSxIXIQF41c9uVm5bddjwdtfz9FMz5MbjOrBUU8pUqMMosfAtG1GhyeEY0fTRGktz-vWncv3Z8BOEkFaZE5geo-VX6GwheV-KzZ7tK023SBMJFwYWCSd2_Byuz-QnBuoENxDtTH-m");'
+                ></div>
+                <p class="text-[#141414] text-base font-medium leading-normal">Accessories</p>
+              </div>
+            </div>
+            <h2 class="text-[#141414] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">New Arrivals</h2>
+            <div class="flex overflow-y-auto [-ms-scrollbar-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <div class="flex items-stretch p-4 gap-3">
+                <div class="flex h-full flex-1 flex-col gap-4 rounded-lg min-w-60">
+                  <div
+                    class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg flex flex-col"
+                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCGb_YB0P0Y0KxWpgXkHkJhWSfsQgRT6U7jy1EsNxsYdSifGSXcookTMOZnTVhbzPUIkU2O5j_izDh-73qouoFccg08t7akgH9xt70GGo1vWMt13Jx9st8-tfdObur8hYbJlZy12V3hyTid6epAd-p81MwICFEdlMXwEqNJRY5vpOld2s72Pvu1py0Y9ozjk2NjSbK6QV-XQohKljPrU44NSIK6D209BX7xxSAOCUwmUmHjc_5ImIqFeegpTQcUHLZ4Xztzf51URZgM");'
+                  ></div>
+                  <div>
+                    <p class="text-[#141414] text-base font-medium leading-normal">Modern Fit Jeans</p>
+                    <p class="text-neutral-500 text-sm font-normal leading-normal">Perfect for everyday wear</p>
+                  </div>
                 </div>
-                <div class="text-center">
-                    <button class="btn btn-primary" id="generate-image-btn">Generate Image</button>
+                <div class="flex h-full flex-1 flex-col gap-4 rounded-lg min-w-60">
+                  <div
+                    class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg flex flex-col"
+                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBnoE2ExofTTNsks8AEgVMJSm2Nxvg4OLK321_S4a_PU2BOZbsswsmKE-dtcNAJkzwg9L7IQYHqM3R4Lm65pFWyZZcqBcczw-eSOLuvyrqqdkVAO8zl1eAIjuiOIAIi6wI-0dTPq_xXM-L371f0vMJj7ak9-CrDoLIdOmW4MPPL06K7p7hweorDONquEAYETBAayozyUiCYfAiUrtaZ4qGU2D_FdgDXKS4F2o4ug6Ih35i_Pb4MTPLjxuDfZlKGwHwXIfD61QxpZQyg");'
+                  ></div>
+                  <div>
+                    <p class="text-[#141414] text-base font-medium leading-normal">Flowy Summer Dress</p>
+                    <p class="text-neutral-500 text-sm font-normal leading-normal">Stay cool and stylish</p>
+                  </div>
                 </div>
+                <div class="flex h-full flex-1 flex-col gap-4 rounded-lg min-w-60">
+                  <div
+                    class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg flex flex-col"
+                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAS76LID3nsrUp4CEquwr2YVPZ2CvcSG3FugEf7s6qyyhPo-sBkY-P-J0sU2w4Tm4dil_MxkcyyfAbm67N1egvK5p34vOo3729GFpbgsDKYOQU_Q06UqINkGALMu-6Xd2LVlRls29k0e91A-J-ehdjcjdw29Q3mVjTKBJ-YhMXyxIZLd50JnhrBQTKf_iO2vL9NyQU_Tu1OQ7jTw5zKYrb_oBuAr3YZ3Ej7MDChogTZP1cTbH2Y1LJkLuMvKsn3y4YQSAHApjaNwU2z");'
+                  ></div>
+                  <div>
+                    <p class="text-[#141414] text-base font-medium leading-normal">Lightweight Linen Shirt</p>
+                    <p class="text-neutral-500 text-sm font-normal leading-normal">Breathable and comfortable</p>
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
-    </div>
-
-    <footer class="bg-light text-dark text-center p-4 mt-5">
-        <div class="container">
-            <p>&copy; 2025 Uniglow. All Rights Reserved.</p>
-            <div>
-                <a href="#" class="text-dark me-3"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="text-dark me-3"><i class="fab fa-instagram"></i></a>
-                <a href="#" class="text-dark"><i class="fab fa-facebook-f"></i></a>
-            </div>
-        </div>
-    </footer>
-</body>
-</html>
+{% endblock %}

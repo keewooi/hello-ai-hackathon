@@ -1,65 +1,164 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ product.name }} - Uniglow</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <a class="navbar-brand" href="/">
-                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Uniglow Logo" height="50">
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Products</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+{% extends "base.html" %}
 
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-6">
-                <img src="{{ product.image_urls.medium }}" class="img-fluid" alt="{{ product.name }}">
-            </div>
-            <div class="col-md-6">
-                <h2>{{ product.name }}</h2>
-                <p>{{ product.description.long }}</p>
-                <p><i class="fas fa-star text-warning"></i> {{ product.rating }}</p>
-                <a href="{{ url_for('add_to_virtual_try_on', image_url=product.image_urls.large) }}" class="btn btn-primary">Virtual Try-On</a>
-            </div>
-        </div>
+{% block title %}{{ product.name }} - StyleHub{% endblock %}
+
+{% block content %}
+<div class="px-40 flex flex-1 justify-center py-5">
+  <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+    <div class="flex flex-wrap gap-2 p-4">
+      <a class="text-neutral-500 text-base font-medium leading-normal" href="{{ url_for('index') }}">Home</a>
+      <span class="text-neutral-500 text-base font-medium leading-normal">/</span>
+      <a class="text-neutral-500 text-base font-medium leading-normal" href="{{ url_for('products') }}">Products</a>
+      {% if product.name %}
+      <span class="text-neutral-500 text-base font-medium leading-normal">/</span>
+      <span class="text-[#141414] text-base font-medium leading-normal">{{ product.name }}</span>
+      {% endif %}
     </div>
-
-    <footer class="bg-light text-dark text-center p-4 mt-5">
-        <div class="container">
-            <p>&copy; 2025 Uniglow. All Rights Reserved.</p>
-            <div>
-                <a href="#" class="text-dark me-3"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="text-dark me-3"><i class="fab fa-instagram"></i></a>
-                <a href="#" class="text-dark"><i class="fab fa-facebook-f"></i></a>
-            </div>
+    {% if product.image_urls %}
+    <div class="flex w-full grow bg-neutral-50 @container p-4">
+      {% if product.image_urls.large %}
+      <div
+          class="w-full bg-center bg-no-repeat bg-cover aspect-auto rounded-none col-span-2"
+          style='background-image: url("{{ product.image_urls.large }}");'
+        ></div>
+        {% if product.image_urls.small_set %}
+      <div class="w-full gap-1 overflow-hidden bg-neutral-50 @[480px]:gap-2 aspect-[2/3] rounded-lg grid grid-cols-[1fr_1fr] grid-rows-[2fr_1fr_1fr]">
+        {% for image in product.image_urls.small_set %}
+        <div
+          class="w-full bg-center bg-no-repeat bg-cover aspect-auto rounded-none"
+          style='background-image: url("{{ image }}");'
+        ></div>
+        {% endfor %}
+      </div>
+        {% else %}
+        <div
+            class="w-full bg-center bg-no-repeat bg-cover aspect-auto rounded-none col-span-2"
+            style='background-image: url("{{ product.image_urls.large }}");'
+        ></div>
+        {% endif %}
+      {% endif %}
+    </div>
+    {% endif %}
+    {% if product.name %}
+    <h1 class="text-[#141414] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 text-left pb-3 pt-5">{{ product.name }}</h1>
+    {% endif %}
+    {% if product.id %}
+    <p class="text-neutral-500 text-sm font-normal leading-normal pb-3 pt-1 px-4">Item # {{ product.id }}</p>
+    {% endif %}
+    {% if product.description.long %}
+    <p class="text-[#141414] text-base font-normal leading-normal pb-3 pt-1 px-4">
+      {{ product.description.long }}
+    </p>
+    {% endif %}
+    {% if product.price %}
+    <h3 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Price</h3>
+    <h2 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] px-4 text-left pb-2 pt-4">${{ product.price }}</h2>
+    {% endif %}
+    {% if product.sizes %}
+    <h3 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Size</h3>
+    <div class="flex flex-wrap gap-3 p-4">
+      {% for size in product.sizes %}
+      <label
+        class="text-sm font-medium leading-normal flex items-center justify-center rounded-lg border border-[#dbdbdb] px-4 h-11 text-[#141414] has-[:checked]:border-[3px] has-[:checked]:px-3.5 has-[:checked]:border-[#141414] relative cursor-pointer"
+      >
+        {{ size }}
+        <input type="radio" class="invisible absolute" name="size" />
+      </label>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% if product.colors %}
+    <h3 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Color</h3>
+    <div class="flex flex-wrap gap-5 p-4">
+      {% for color in product.colors %}
+      <label
+        class="size-10 rounded-full border border-[#dbdbdb] ring-[color-mix(in_srgb,#141414_50%,_transparent)] has-[:checked]:border-[3px] has-[:checked]:border-neutral-50 has-[:checked]:ring"
+        style="background-color: {{ color.hex }};"
+      >
+        <input type="radio" class="invisible" name="color" />
+      </label>
+      {% endfor %}
+    </div>
+    {% endif %}
+    <div class="flex px-4 py-3 justify-start">
+      {% if product.image_urls.large %}
+      <a href="{{ url_for('add_to_virtual_try_on', image_url=product.image_urls.large) }}"
+        class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#141414] text-neutral-50 text-sm font-bold leading-normal tracking-[0.015em]"
+      >
+        <span class="truncate">Virtual Try-On</span>
+      </a>
+      {% endif %}
+    </div>
+    {% if product.reviews %}
+    <h3 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Customer Reviews</h3>
+    <div class="flex flex-wrap gap-x-8 gap-y-6 p-4">
+      <div class="flex flex-col gap-2">
+        <p class="text-[#141414] text-4xl font-black leading-tight tracking-[-0.033em]">{{ product.rating }}</p>
+        <div class="flex gap-0.5">
+          {% for i in range(5) %}
+            {% if i < product.rating | int %}
+              <div class="text-[#141414]" data-icon="Star" data-size="18px" data-weight="fill">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" fill="currentColor" viewBox="0 0 256 256">
+                  <path
+                    d="M234.5,114.38l-45.1,39.36,13.51,58.6a16,16,0,0,1-23.84,17.34l-51.11-31-51,31a16,16,0,0,1-23.84-17.34L66.61,153.8,21.5,114.38a16,16,0,0,1,9.11-28.06l59.46-5.15,23.21-55.36a15.95,15.95,0,0,1,29.44,0h0L166,81.17l59.44,5.15a16,16,0,0,1,9.11,28.06Z"
+                  ></path>
+                </svg>
+              </div>
+            {% else %}
+              <div class="text-[#c2c2c2]" data-icon="Star" data-size="18px" data-weight="regular">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" fill="currentColor" viewBox="0 0 256 256">
+                  <path
+                    d="M239.2,97.29a16,16,0,0,0-13.81-11L166,81.17,142.72,25.81h0a15.95,15.95,0,0,0-29.44,0L90.07,81.17,30.61,86.32a16,16,0,0,0-9.11,28.06L66.61,153.8,53.09,212.34a16,16,0,0,0,23.84,17.34l51-31,51.11,31a16,16,0,0,0,23.84-17.34l-13.51-58.6,45.1-39.36A16,16,0,0,0,239.2,97.29Zm-15.22,5-45.1,39.36a16,16,0,0,0-5.08,15.71L187.35,216v0l-51.07-31a15.9,15.9,0,0,0-16.54,0l-51,31h0L82.2,157.4a16,16,0,0,0-5.08-15.71L32,102.35a.37.37,0,0,1,0-.09l59.44-5.14a16,16,0,0,0,13.35-9.75L128,32.08l23.2,55.29a16,16,0,0,0,13.35,9.75L224,102.26S224,102.32,224,102.33Z"
+                  ></path>
+                </svg>
+              </div>
+            {% endif %}
+          {% endfor %}
         </div>
-    </footer>
-</body>
-</html>
+        <p class="text-[#141414] text-base font-normal leading-normal">{{ product.reviews | length }} reviews</p>
+      </div>
+    </div>
+    <div class="flex flex-col gap-8 overflow-x-hidden bg-neutral-50 p-4">
+      {% for review in product.reviews %}
+      <div class="flex flex-col gap-3 bg-neutral-50">
+        <div class="flex items-center gap-3">
+          <div
+            class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10"
+            style='background-image: url("{{ review.avatar }}");'
+          ></div>
+          <div class="flex-1">
+            <p class="text-[#141414] text-base font-medium leading-normal">{{ review.author }}</p>
+            <p class="text-neutral-500 text-sm font-normal leading-normal">{{ review.date }}</p>
+          </div>
+        </div>
+        <div class="flex gap-0.5">
+          {% for i in range(5) %}
+            {% if i < review.rating %}
+              <div class="text-[#141414]" data-icon="Star" data-size="20px" data-weight="fill">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
+                  <path
+                    d="M234.5,114.38l-45.1,39.36,13.51,58.6a16,16,0,0,1-23.84,17.34l-51.11-31-51,31a16,16,0,0,1-23.84-17.34L66.61,153.8,21.5,114.38a16,16,0,0,1,9.11-28.06l59.46-5.15,23.21-55.36a15.95,15.95,0,0,1,29.44,0h0L166,81.17l59.44,5.15a16,16,0,0,1,9.11,28.06Z"
+                  ></path>
+                </svg>
+              </div>
+            {% else %}
+              <div class="text-[#c2c2c2]" data-icon="Star" data-size="20px" data-weight="regular">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
+                  <path
+                    d="M239.2,97.29a16,16,0,0,0-13.81-11L166,81.17,142.72,25.81h0a15.95,15.95,0,0,0-29.44,0L90.07,81.17,30.61,86.32a16,16,0,0,0-9.11,28.06L66.61,153.8,53.09,212.34a16,16,0,0,0,23.84,17.34l51-31,51.11,31a16,16,0,0,0,23.84-17.34l-13.51-58.6,45.1-39.36A16,16,0,0,0,239.2,97.29Zm-15.22,5-45.1,39.36a16,16,0,0,0-5.08,15.71L187.35,216v0l-51.07-31a15.9,15.9,0,0,0-16.54,0l-51,31h0L82.2,157.4a16,16,0,0,0-5.08-15.71L32,102.35a.37.37,0,0,1,0-.09l59.44-5.14a16,16,0,0,0,13.35-9.75L128,32.08l23.2,55.29a16,16,0,0,0,13.35,9.75L224,102.26S224,102.32,224,102.33Z"
+                  ></path>
+                </svg>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+        <p class="text-[#141414] text-base font-normal leading-normal">
+          {{ review.comment }}
+        </p>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

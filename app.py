@@ -36,7 +36,14 @@ def index():
     with open('products.json') as f:
         products = json.load(f)
     
-    return render_template('index.html', products=products)
+    # Pass a few featured products to the home page
+    return render_template('index.html', products=products[:3])
+
+@app.route('/products')
+def products():
+    with open('products.json') as f:
+        all_products = json.load(f)
+    return render_template('products.html', products=all_products)
 
 @app.route('/product/<int:product_id>')
 def product(product_id):
@@ -76,7 +83,7 @@ def imagen_route():
 
     try:
         # Rewrite the prompt
-        rewritten_prompt = rewrite_prompt(prompt)
+        rewritten_prompt, title = rewrite_prompt(prompt)
         
         # Generate the image
         generated_image = generate_image(rewritten_prompt)
@@ -100,7 +107,7 @@ def imagen_route():
         
         blob.upload_from_string(img_byte_arr, content_type='image/png')
 
-        return jsonify({'image_url': blob.public_url, 'rewritten_prompt': rewritten_prompt})
+        return jsonify({'image_url': blob.public_url, 'rewritten_prompt': rewritten_prompt, 'title': title})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
@@ -148,10 +155,23 @@ def virtual_try_on_route():
 @app.route('/add_to_virtual_try_on')
 def add_to_virtual_try_on():
     image_url = request.args.get('image_url')
+    title = request.args.get('title', 'Generated Product')
     images = session.get('product_images', [])
-    if image_url not in images:
-        images.append(image_url)
+    
+    # Check if the image_url is already in the list
+    found = False
+    for item in images:
+        if isinstance(item, dict) and item['image_url'] == image_url:
+            found = True
+            break
+        elif isinstance(item, str) and item == image_url:
+            found = True
+            break
+            
+    if not found:
+        images.append({'image_url': image_url, 'title': title})
         session['product_images'] = images
+        
     return redirect(url_for('virtual'))
 
 @app.route('/virtual')
@@ -161,18 +181,18 @@ def virtual():
 
 @app.route('/remove_from_virtual_try_on')
 def remove_from_virtual_try_on():
-    image_url = request.args.get('image_url')
+    image_url_to_remove = request.args.get('image_url')
     images = session.get('product_images', [])
-    if image_url in images:
-        images.remove(image_url)
-        session['product_images'] = images
+    images = [item for item in images if (isinstance(item, dict) and item['image_url'] != image_url_to_remove) or (isinstance(item, str) and item != image_url_to_remove)]
+    session['product_images'] = images
     return redirect(url_for('virtual'))
 @app.route('/generated_product')
 def generated_product():
     image_url = request.args.get('image_url')
     description = request.args.get('description')
+    title = request.args.get('title')
     product = {
-        'name': 'Generated Product',
+        'name': title,
         'image_urls': {
             'large': image_url
         },
@@ -182,7 +202,7 @@ def generated_product():
         'rating': 'N/A',
         'reviews': []
     }
-    return render_template('generated_product.html', product=product)
+    return render_template('generated_product.html', product=product, title=title)
 
 
 @app.route('/api/upload', methods=['POST'])
