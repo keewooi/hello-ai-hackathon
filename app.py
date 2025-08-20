@@ -183,6 +183,22 @@ def remove_from_virtual_try_on():
         images.remove(image_url)
         session['product_images'] = images
     return redirect(url_for('virtual'))
+@app.route('/generated_product')
+def generated_product():
+    image_url = request.args.get('image_url')
+    description = request.args.get('description')
+    product = {
+        'name': 'Generated Product',
+        'image_urls': {
+            'large': image_url
+        },
+        'description': {
+            'long': description
+        },
+        'rating': 'N/A',
+        'reviews': []
+    }
+    return render_template('generated_product.html', product=product)
 
 if __name__ == '__main__':
     os.makedirs(UPLOAD_FOLDER, exist_ok=True)
