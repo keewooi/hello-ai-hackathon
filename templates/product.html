@@ -31,12 +31,8 @@
           ></div>
           {% endfor %}
         </div>
-        {% else %}
-        <div
-            class="w-full bg-center bg-no-repeat bg-cover aspect-auto rounded-none col-span-2"
-            style='background-image: url("{{ product.image_urls.large }}");'
-        ></div>
       {% endif %}
+      
     </div>
     {% endif %}
     {% if product.name %}
@@ -51,8 +47,7 @@
     </p>
     {% endif %}
     {% if product.price %}
-    <h3 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Price</h3>
-    <h2 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] px-4 text-left pb-2 pt-4">${{ "%.2f"|format(product.price) }}</h2>
+    <h2 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] px-4 text-left pb-2 pt-4">Price: ${{ "%.2f"|format(product.price) }}</h2>
     {% endif %}
     {% if product.sizes %}
     <h3 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Size</h3>

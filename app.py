@@ -68,10 +68,12 @@ def product(product_id):
             product_details = {
                 'id': product_data.id,
                 'name': product_data.title,
-                'image_urls': { 'large': image_uri, 'small': image_uri, 'medium': image_uri },
+                'image_urls': { 'large': image_uri, 'small': image_uri, 'medium': image_uri, 'small_set':[image_uri] },
                 'price': product_data.price_info.price if product_data.price_info else None,
                 'description': { 'long': product_data.description }
             }
+
+            print(product_details)
             
             return render_template('product.html', product=product_details)
         except Exception as e:
@@ -84,6 +86,8 @@ def product(product_id):
             with open('products.json') as f:
                 products = json.load(f)
             product = next((p for p in products if p['id'] == numeric_id), None)
+
+            print(product)
             if product:
                 return render_template('product.html', product=product)
         except (ValueError, StopIteration):
