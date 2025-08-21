@@ -4,3 +4,4 @@ google-genai
 Pillow
 werkzeug
 google-cloud-storage
+google-cloud-retail
