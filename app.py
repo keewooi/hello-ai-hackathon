@@ -7,12 +7,14 @@ import uuid
 from flask import Flask, render_template, jsonify, request, send_file, session, redirect, url_for
 from werkzeug.utils import secure_filename
 from virtual_try_on import generate_virtual_try_on_image
+from veo import generate_video_from_gcs
 from imagen import rewrite_prompt, generate_image
 from google.cloud import storage
 import io
 from urllib.parse import urlparse
 from google.cloud import retail_v2
 from concurrent.futures import ThreadPoolExecutor
+import threading
 
 app = Flask(__name__)
 app.secret_key = 'super secret key'
@@ -25,6 +27,9 @@ GCS_BUCKET_NAME = os.environ.get("GCS_BUCKET_NAME")
 VAIS_GCP_PROJECT_NUMBER = os.environ.get("VAIS_GCP_PROJECT_NUMBER")
 VAIS_GCP_LOCATION = os.environ.get("VAIS_GCP_LOCATION")
 VAIS_CATALOG_ID = os.environ.get("VAIS_CATALOG_ID")
+
+# In-memory store for video generation status
+video_status = {}
 
 def convert_to_gs_uri(uri: str) -> str:
     """Converts a public GCS URL to a gs:// URI."""
@@ -243,6 +248,19 @@ def virtual_try_on_route():
     clothing_image_paths = [convert_to_gs_uri(uri) for uri in apparel_gcs_uris]
 
     try:
+        if not person_image_path.startswith("gs://"):
+            # It's a local file path, so we need to upload it to GCS
+            storage_client = storage.Client()
+            bucket_name = GCS_BUCKET_NAME
+            if bucket_name.startswith("gs://"):
+                bucket_name = bucket_name[5:]
+            bucket = storage_client.bucket(bucket_name)
+            
+            filename = f"profile_photos/{int(time.time())}_{os.path.basename(person_image_path)}"
+            blob = bucket.blob(filename)
+            blob.upload_from_filename(person_image_path)
+            person_image_path = f"gs://{bucket.name}/{blob.name}"
+
         generated_image = generate_virtual_try_on_image(person_image_path, clothing_image_paths)
         
         # Generate a unique filename for the output image
@@ -258,18 +276,52 @@ def virtual_try_on_route():
         
         # Convert PIL image to bytes
         img_byte_arr = io.BytesIO()
-        pil_image = generated_image._pil_image  # Get the underlying PIL image
-        pil_image.save(img_byte_arr, format='PNG')  # Call save on the PIL image
+        pil_image = generated_image._pil_image
+        pil_image.save(img_byte_arr, format='PNG')
         img_byte_arr = img_byte_arr.getvalue()
         
         blob.upload_from_string(img_byte_arr, content_type='image/png')
 
+        # Use the public URL as the generation ID
+        generation_id = blob.public_url
+        video_status[generation_id] = {'status': 'processing', 'url': None}
+
+        # Start video generation in a background thread
+        video_thread = threading.Thread(target=generate_and_store_video, args=(generation_id, blob.name))
+        video_thread.start()
+
         session['vto_image_url'] = blob.public_url
         session['vto_person_image'] = person_image_path
         session['vto_clothing_images'] = clothing_image_paths
-        return jsonify({'image_url': blob.public_url})
+        return jsonify({'image_url': blob.public_url, 'generation_id': generation_id})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+def generate_and_store_video(generation_id, image_blob_name):
+    try:
+        image_gcs_uri = f"gs://{GCS_BUCKET_NAME}/{image_blob_name}"
+        video_filename = f"veo_{int(time.time())}.mp4"
+        output_video_gcs_uri = f"gs://{GCS_BUCKET_NAME}/veo/{video_filename}"
+        
+        video_url = generate_video_from_gcs(image_gcs_uri, output_video_gcs_uri)
+        video_status[generation_id] = {'status': 'done', 'url': video_url}
+    except Exception as e:
+        print(f"Video generation failed for {generation_id}: {e}")
+        video_status[generation_id] = {'status': 'failed', 'url': None}
+
+@app.route('/api/poll-video/<path:generation_id>')
+def poll_video(generation_id):
+    status = video_status.get(generation_id, {'status': 'not_found'})
+    return jsonify(status)
+
+@app.route('/api/save-video-url', methods=['POST'])
+def save_video_url():
+    data = request.get_json()
+    video_url = data.get('video_url')
+    if video_url:
+        session['vto_video_url'] = video_url
+        return jsonify({'status': 'ok'})
+    return jsonify({'status': 'error', 'message': 'No URL provided'}), 400
 
 @app.route('/add_to_virtual_try_on')
 def add_to_virtual_try_on():
@@ -299,6 +351,7 @@ def virtual():
     vto_image_url = session.get('vto_image_url')
     vto_person_image = session.get('vto_person_image')
     vto_clothing_images = session.get('vto_clothing_images')
+    vto_video_url = session.get('vto_video_url')
 
     # Get uploaded models from GCS
     storage_client = storage.Client()
@@ -320,10 +373,11 @@ def virtual():
 
     current_clothing_gs_uris = [convert_to_gs_uri(uri) for uri in current_clothing_images]
     if vto_image_url and vto_clothing_images and set(vto_clothing_images) == set(current_clothing_gs_uris):
-        return render_template('virtual.html', images=images, vto_image_url=vto_image_url, uploaded_models=uploaded_models)
+        return render_template('virtual.html', images=images, vto_image_url=vto_image_url, vto_video_url=vto_video_url, uploaded_models=uploaded_models)
     else:
         # Clear the old VTO image if the items have changed
         session.pop('vto_image_url', None)
+        session.pop('vto_video_url', None)
         session.pop('vto_person_image', None)
         session.pop('vto_clothing_images', None)
         return render_template('virtual.html', images=images, uploaded_models=uploaded_models)
@@ -424,12 +478,7 @@ def upload_file():
         
         blob.upload_from_file(file, content_type=file.content_type)
 
-        # Add the uploaded image to the session
-        uploaded_models = session.get('uploaded_models', [])
-        uploaded_models.append(blob.public_url)
-        session['uploaded_models'] = uploaded_models
-        
-        return redirect(url_for('virtual'))
+        return jsonify({'gcs_uri': f'gs://{bucket.name}/{blob.name}'})
 
 if __name__ == '__main__':
     os.makedirs(UPLOAD_FOLDER, exist_ok=True)

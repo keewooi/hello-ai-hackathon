@@ -1,4 +1,22 @@
+function setVideoContainerHeight() {
+    const img = document.querySelector('#results-image-container img');
+    if (img) {
+        const setHeight = () => {
+            const videoContainer = document.getElementById('video-container');
+            if (videoContainer) {
+                videoContainer.style.height = `${img.clientHeight}px`;
+            }
+        };
+        if (img.complete) {
+            setHeight();
+        } else {
+            img.onload = setHeight;
+        }
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
+    setVideoContainerHeight();
     const uploadTab = document.getElementById('upload-tab');
     const modelTab = document.getElementById('model-tab');
     const uploadSection = document.getElementById('upload-section');
@@ -111,7 +129,28 @@ document.addEventListener('DOMContentLoaded', function() {
         const loadingModal = document.getElementById('loadingModal');
         loadingModal.classList.remove('hidden');
 
-        if (selectedModelImage) {
+        if (file) {
+            const formData = new FormData();
+            formData.append('file', file);
+            fetch('/api/upload', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.gcs_uri) {
+                    proceedWithTryOn(data.gcs_uri);
+                } else {
+                    alert('Error uploading file: ' + (data.error || 'Unknown error'));
+                    loadingModal.classList.add('hidden');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error uploading file.');
+                loadingModal.classList.add('hidden');
+            });
+        } else if (selectedModelImage) {
              proceedWithTryOn(selectedModelImage.src);
         }
     });
@@ -138,19 +177,34 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             const loadingModal = document.getElementById('loadingModal');
             loadingModal.classList.add('hidden');
-            if (data.image_url) {
+            if (data.image_url && data.generation_id) {
                 const resultsContainer = document.getElementById('results-container');
                 const resultsImageContainer = document.getElementById('results-image-container');
                 resultsImageContainer.innerHTML = `
                     <div class="flex flex-col items-center">
-                        <img src="${data.image_url}" class="img-fluid w-1/2" alt="Virtual Try-On Result">
-                        <h3 class="text-lg font-bold mt-4">Like what you see?</h3>
-                        <a href="/add_to_cart" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#141414] text-neutral-50 text-sm font-bold leading-normal tracking-[0.015em] mt-2">
-                            <span class="truncate">Add To Cart</span>
-                        </a>
+                        <div class="flex flex-row justify-center gap-4 w-full">
+                            <div class="w-1/2">
+                                <img src="${data.image_url}" class="img-fluid w-full rounded-lg" alt="Virtual Try-On Result">
+                            </div>
+                            <div id="video-container" class="w-1/2 relative flex flex-col items-center justify-center bg-gray-200 rounded-lg">
+                                <div class="animate-spin inline-block w-8 h-8 border-4 rounded-full border-gray-400 border-t-transparent" role="status"></div>
+                                <p class="mt-2 text-gray-600">Generating your live preview</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-center mt-4">
+                            <h3 class="text-lg font-bold mt-4">Like what you see?</h3>
+                            <a href="/add_to_cart" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#141414] text-neutral-50 text-sm font-bold leading-normal tracking-[0.015em] mt-2">
+                                <span class="truncate">Add To Cart</span>
+                            </a>
+                        </div>
                     </div>
                 `;
                 resultsContainer.style.display = 'block';
+                setVideoContainerHeight();
+                // Only poll for the video if it's not already there
+                if (!document.querySelector('#video-container video')) {
+                    pollForVideo(data.generation_id);
+                }
             } else {
                 alert('Error generating image: ' + (data.error || 'Unknown error'));
             }
@@ -161,5 +215,35 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Error:', error);
             alert('Error sending virtual try-on request.');
         });
+        
+        function pollForVideo(generationId) {
+            const interval = setInterval(() => {
+                fetch(`/api/poll-video/${encodeURIComponent(generationId)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'done') {
+                            clearInterval(interval);
+                            const videoContainer = document.getElementById('video-container');
+                            videoContainer.innerHTML = `<video src="${data.url}" class="h-full w-auto rounded-lg" controls autoplay loop muted></video>`;
+                            // Save the video URL to the session
+                            fetch('/api/save-video-url', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({ video_url: data.url }),
+                            });
+                        } else if (data.status === 'failed') {
+                            clearInterval(interval);
+                            const videoContainer = document.getElementById('video-container');
+                            videoContainer.innerHTML = `<p class="text-red-500">Video generation failed.</p>`;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error polling for video:', error);
+                        clearInterval(interval);
+                    });
+            }, 5000); // Poll every 5 seconds
+        }
     }
 });

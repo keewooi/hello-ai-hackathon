@@ -54,7 +54,7 @@
                   <p class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] max-w-[480px] text-center">Drag and drop a photo here, or browse</p>
                   <p class="text-[#141414] text-sm font-normal leading-normal max-w-[480px] text-center">Supported formats: JPG, PNG</p>
                 </div>
-                <input type="file" name="file" id="profile-pic" class="hidden" onchange="this.form.submit()">
+                <input type="file" name="file" id="profile-pic" class="hidden">
                 <label for="profile-pic"
                   class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#ededed] text-[#141414] text-sm font-bold leading-normal tracking-[0.015em]"
                 >
@@ -114,11 +114,25 @@
                 <div class="flex justify-center" id="results-image-container">
                     {% if vto_image_url %}
                     <div class="flex flex-col items-center">
-                        <img src="{{ vto_image_url }}" class="img-fluid w-1/2" alt="Virtual Try-On Result">
-                        <h3 class="text-lg font-bold mt-4">Like what you see?</h3>
-                        <a href="/add_to_cart" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#141414] text-neutral-50 text-sm font-bold leading-normal tracking-[0.015em] mt-2">
-                            <span class="truncate">Add To Cart</span>
-                        </a>
+                        <div class="flex flex-row justify-center gap-4 w-full">
+                            <div class="w-1/2">
+                                <img src="{{ vto_image_url }}" class="img-fluid w-full rounded-lg" alt="Virtual Try-On Result">
+                            </div>
+                            <div id="video-container" class="w-1/2 relative flex flex-col items-center justify-center bg-gray-200 rounded-lg">
+                                {% if vto_video_url %}
+                                <video src="{{ vto_video_url }}" class="h-full w-auto rounded-lg" controls autoplay loop muted></video>
+                                {% else %}
+                                <div class="animate-spin inline-block w-8 h-8 border-4 rounded-full border-gray-400 border-t-transparent" role="status"></div>
+                                <p class="mt-2 text-gray-600">Generating your live preview</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-center mt-4">
+                            <h3 class="text-lg font-bold mt-4">Like what you see?</h3>
+                            <a href="/add_to_cart" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#141414] text-neutral-50 text-sm font-bold leading-normal tracking-[0.015em] mt-2">
+                                <span class="truncate">Add To Cart</span>
+                            </a>
+                        </div>
                     </div>
                     {% endif %}
                 </div>
