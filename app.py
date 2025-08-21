@@ -51,33 +51,34 @@ def products():
         curated_products = json.load(f)
     return render_template('products.html', curated_products=curated_products)
 
-@app.route('/product/<string:product_id>')
+@app.route('/product/<path:product_id>')
 def product(product_id):
-    # Try fetching from Vertex AI Search first
-    try:
-        product_client = retail_v2.ProductServiceClient()
-        product_name = product_client.product_path(
-            VAIS_GCP_PROJECT_NUMBER, VAIS_GCP_LOCATION, VAIS_CATALOG_ID, product_id
-        )
-        get_request = retail_v2.GetProductRequest(name=product_name)
-        product_data = product_client.get_product(request=get_request)
+    # If the product_id is a full resource name, use it directly.
+    # Otherwise, assume it's a numeric ID from the JSON file.
+    if 'projects/' in product_id:
+        try:
+            product_client = retail_v2.ProductServiceClient()
+            get_request = retail_v2.GetProductRequest(name=product_id)
+            product_data = product_client.get_product(request=get_request)
 
-        image_uri = ""
-        if product_data.images:
-            image_uri = product_data.images[0].uri
+            image_uri = ""
+            if product_data.images:
+                image_uri = product_data.images[0].uri
 
-        product_details = {
-            'id': product_data.id,
-            'name': product_data.title,
-            'image_urls': { 'large': image_uri },
-            'price': product_data.price_info.price if product_data.price_info else None,
-            'description': { 'long': product_data.description }
-        }
-        
-        return render_template('product.html', product=product_details)
-    except Exception as e:
-        print(f"Could not fetch product {product_id} from Vertex AI Search: {e}. Trying JSON fallback.")
-        # Fallback to JSON if it's a numeric ID
+            product_details = {
+                'id': product_data.id,
+                'name': product_data.title,
+                'image_urls': { 'large': image_uri, 'small': image_uri, 'medium': image_uri },
+                'price': product_data.price_info.price if product_data.price_info else None,
+                'description': { 'long': product_data.description }
+            }
+            
+            return render_template('product.html', product=product_details)
+        except Exception as e:
+            print(f"Could not fetch product {product_id} from Vertex AI Search: {e}")
+            return "Product not found", 404
+    else:
+        # Fallback to JSON for numeric IDs
         try:
             numeric_id = int(product_id)
             with open('products.json') as f:
@@ -86,7 +87,7 @@ def product(product_id):
             if product:
                 return render_template('product.html', product=product)
         except (ValueError, StopIteration):
-             pass # Not a numeric ID or not found in JSON
+            pass  # Not a numeric ID or not found in JSON
 
     return "Product not found", 404
 
@@ -149,7 +150,7 @@ def get_products():
                         image_uri = product_data.images[0].uri
 
                     products.append({
-                        'id': product_data.id,
+                        'id': product_data.name,
                         'name': product_data.title,
                         'image_urls': { 'small': image_uri, 'large': image_uri },
                         'price': product_data.price_info.price if product_data.price_info else None

@@ -17,25 +17,25 @@
     {% if product.image_urls %}
     <div class="flex w-full grow bg-neutral-50 @container p-4">
       {% if product.image_urls.large %}
-      <div
-          class="w-full bg-center bg-no-repeat bg-cover aspect-auto rounded-none col-span-2"
-          style='background-image: url("{{ product.image_urls.large }}");'
-        ></div>
-        {% if product.image_urls.small_set %}
-      <div class="w-full gap-1 overflow-hidden bg-neutral-50 @[480px]:gap-2 aspect-[2/3] rounded-lg grid grid-cols-[1fr_1fr] grid-rows-[2fr_1fr_1fr]">
-        {% for image in product.image_urls.small_set %}
         <div
-          class="w-full bg-center bg-no-repeat bg-cover aspect-auto rounded-none"
-          style='background-image: url("{{ image }}");'
+            class="w-full bg-center bg-no-repeat bg-cover aspect-auto rounded-none col-span-2"
+            style='background-image: url("{{ product.image_urls.large }}");'
         ></div>
-        {% endfor %}
-      </div>
+      {% endif %}
+      {% if product.image_urls.small_set %}
+        <div class="w-full gap-1 overflow-hidden bg-neutral-50 @[480px]:gap-2 aspect-[2/3] rounded-lg grid grid-cols-[1fr_1fr] grid-rows-[2fr_1fr_1fr]">
+          {% for image in product.image_urls.small_set %}
+          <div
+            class="w-full bg-center bg-no-repeat bg-cover aspect-auto rounded-none"
+            style='background-image: url("{{ image }}");'
+          ></div>
+          {% endfor %}
+        </div>
         {% else %}
         <div
             class="w-full bg-center bg-no-repeat bg-cover aspect-auto rounded-none col-span-2"
             style='background-image: url("{{ product.image_urls.large }}");'
         ></div>
-        {% endif %}
       {% endif %}
     </div>
     {% endif %}
@@ -52,7 +52,7 @@
     {% endif %}
     {% if product.price %}
     <h3 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Price</h3>
-    <h2 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] px-4 text-left pb-2 pt-4">${{ product.price }}</h2>
+    <h2 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] px-4 text-left pb-2 pt-4">${{ "%.2f"|format(product.price) }}</h2>
     {% endif %}
     {% if product.sizes %}
     <h3 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Size</h3>

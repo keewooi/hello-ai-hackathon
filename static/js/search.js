@@ -17,6 +17,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // The product ID can be a string or number, so we handle both
         const productUrl = `/product/${product.id}`;
 
+        const formatPrice = (price) => {
+            if (price === null || price === undefined) {
+                return 'N/A';
+            }
+            return `$${price.toFixed(2)}`;
+        };
+
         card.innerHTML = `
             <a href="${productUrl}">
                 <div
@@ -26,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </a>
             <div>
               <p class="text-[#141414] text-base font-medium leading-normal">${product.name}</p>
-              <p class="text-neutral-500 text-sm font-normal leading-normal">$${product.price}</p>
+              <p class="text-neutral-500 text-sm font-normal leading-normal">${formatPrice(product.price)}</p>
             </div>
         `;
         return card;
