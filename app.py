@@ -300,6 +300,16 @@ def virtual():
     vto_person_image = session.get('vto_person_image')
     vto_clothing_images = session.get('vto_clothing_images')
 
+    # Get uploaded models from GCS
+    storage_client = storage.Client()
+    bucket_name = GCS_BUCKET_NAME
+    if bucket_name.startswith("gs://"):
+        bucket_name = bucket_name[5:]
+    bucket = storage_client.bucket(bucket_name)
+    blobs = bucket.list_blobs(prefix="profile_photos/")
+    uploaded_models = [blob.public_url for blob in blobs]
+
+
     # Check if the selected images have changed
     current_clothing_images = []
     for item in images:
@@ -310,13 +320,13 @@ def virtual():
 
     current_clothing_gs_uris = [convert_to_gs_uri(uri) for uri in current_clothing_images]
     if vto_image_url and vto_clothing_images and set(vto_clothing_images) == set(current_clothing_gs_uris):
-        return render_template('virtual.html', images=images, vto_image_url=vto_image_url)
+        return render_template('virtual.html', images=images, vto_image_url=vto_image_url, uploaded_models=uploaded_models)
     else:
         # Clear the old VTO image if the items have changed
         session.pop('vto_image_url', None)
         session.pop('vto_person_image', None)
         session.pop('vto_clothing_images', None)
-        return render_template('virtual.html', images=images)
+        return render_template('virtual.html', images=images, uploaded_models=uploaded_models)
 
 @app.route('/remove_from_virtual_try_on')
 def remove_from_virtual_try_on():
@@ -410,11 +420,16 @@ def upload_file():
         bucket = storage_client.bucket(bucket_name)
         
         # Add a timestamp to the filename to avoid overwriting files
-        blob = bucket.blob(f"uploads/{int(time.time())}_{filename}")
+        blob = bucket.blob(f"profile_photos/{int(time.time())}_{filename}")
         
         blob.upload_from_file(file, content_type=file.content_type)
+
+        # Add the uploaded image to the session
+        uploaded_models = session.get('uploaded_models', [])
+        uploaded_models.append(blob.public_url)
+        session['uploaded_models'] = uploaded_models
         
-        return jsonify({'image_url': blob.public_url})
+        return redirect(url_for('virtual'))
 
 if __name__ == '__main__':
     os.makedirs(UPLOAD_FOLDER, exist_ok=True)

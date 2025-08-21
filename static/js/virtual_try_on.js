@@ -111,31 +111,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const loadingModal = document.getElementById('loadingModal');
         loadingModal.classList.remove('hidden');
 
-        if (file) {
-            const formData = new FormData();
-            formData.append('file', file);
-
-            fetch('/api/upload', {
-                method: 'POST',
-                body: formData,
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.image_url) {
-                    uploadedImageUrl = data.image_url;
-                    proceedWithTryOn(uploadedImageUrl);
-                } else {
-                    loadingModal.classList.add('hidden');
-                    alert('Error uploading image: ' + (data.error || 'Unknown error'));
-                }
-            })
-            .catch(error => {
-                loadingModal.classList.add('hidden');
-                console.error('Error:', error);
-                alert('Error uploading image.');
-            });
-        } else {
-            proceedWithTryOn(selectedModelImage.src);
+        if (selectedModelImage) {
+             proceedWithTryOn(selectedModelImage.src);
         }
     });
 
