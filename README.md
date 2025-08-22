@@ -76,3 +76,22 @@ uv run app.py
 ```
 
 The application will be available at `http://127.0.0.1:5000`.
+
+## Production Deployment (to Cloud Run)
+
+```bash
+export project="ksaw-demo"
+export app="uniglow"
+
+gcloud builds submit --tag gcr.io/$project/$app
+
+# remember to update the values below
+gcloud run deploy $app --image gcr.io/$project/$app --platform managed --allow-unauthenticated --region asia-southeast1 --max-instances=1 --min-instances=0 --memory 1G --no-cpu-throttling --timeout 3600 \
+--set-env-vars "GOOGLE_CLOUD_PROJECT=$project" \
+--set-env-vars "GOOGLE_CLOUD_LOCATION=us-central1" \
+--set-env-vars "GOOGLE_GENAI_USE_VERTEXAI=True" \
+--set-env-vars "GCS_BUCKET_NAME=helloai-genmedia" \
+--set-env-vars "VAIS_GCP_PROJECT_NUMBER=1003075616886" \
+--set-env-vars "VAIS_GCP_LOCATION=global" \
+--set-env-vars "VAIS_CATALOG_ID=default_catalog"
+```

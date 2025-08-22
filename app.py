@@ -480,7 +480,3 @@ def upload_file():
 
         return jsonify({'gcs_uri': f'gs://{bucket.name}/{blob.name}'})
 
-if __name__ == '__main__':
-    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-    os.makedirs('static/images', exist_ok=True)
-    app.run(debug=True)

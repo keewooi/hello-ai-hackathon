@@ -69,13 +69,13 @@
             <div id="model-section" class="hidden p-4">
                 <input type="hidden" id="selected-model" name="selected-model" value="">
                 <div class="grid grid-cols-4 gap-4">
-                    <img src="https://storage.googleapis.com/ksaw_thelook_ecommerce/static/model_1.jpg" class="img-fluid model-pic model-selection" data-model-id="1" alt="Model 1">
-                    <img src="https://storage.googleapis.com/ksaw_thelook_ecommerce/static/model_2.jpg" class="img-fluid model-pic model-selection" data-model-id="2" alt="Model 2">
-                    <img src="https://storage.googleapis.com/ksaw_thelook_ecommerce/static/model_3.jpg" class="img-fluid model-pic model-selection" data-model-id="3" alt="Model 3">
-                    <img src="https://storage.googleapis.com/ksaw_thelook_ecommerce/static/model_4.jpg" class="img-fluid model-pic model-selection" data-model-id="4" alt="Model 4">
+                    <img src="https://storage.googleapis.com/ksaw_thelook_ecommerce/static/model_1.jpg" class="img-fluid model-pic model-selection cursor-pointer" data-model-id="1" alt="Model 1">
+                    <img src="https://storage.googleapis.com/ksaw_thelook_ecommerce/static/model_2.jpg" class="img-fluid model-pic model-selection cursor-pointer" data-model-id="2" alt="Model 2">
+                    <img src="https://storage.googleapis.com/ksaw_thelook_ecommerce/static/model_3.jpg" class="img-fluid model-pic model-selection cursor-pointer" data-model-id="3" alt="Model 3">
+                    <img src="https://storage.googleapis.com/ksaw_thelook_ecommerce/static/model_4.jpg" class="img-fluid model-pic model-selection cursor-pointer" data-model-id="4" alt="Model 4">
                     {% if uploaded_models %}
                         {% for model_url in uploaded_models %}
-                            <img src="{{ model_url }}" class="img-fluid model-pic model-selection" data-model-id="{{ model_url }}" alt="User Uploaded Model">
+                            <img src="{{ model_url }}" class="img-fluid model-pic model-selection cursor-pointer" data-model-id="{{ model_url }}" alt="User Uploaded Model">
                         {% endfor %}
                     {% endif %}
                 </div>
